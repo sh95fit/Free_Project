@@ -1,34 +1,28 @@
-# 메뉴 출력하기, 게시물 쓰기
-'''
-# 메뉴 출력하기
- 출력할 내용
-- Hun's Blog -
-- 메뉴를 선택해 주세요 -
-1. 게시글 쓰기
-2. 게시글 목록
-3. 프로그램 종료
-
-* 범위가 넘어가는 경우, 문자열을 받는 경우 예외 처리 필요!
-* 프로그램 종료 전까지 무한 반복! while True 사용
-
-# 게시물 쓰기
- 출력할 내용
- - 게시글 쓰기 -
- 제목을 입력해 주세요 >>> 
- 파이썬 공부 1일차
- 본문을 입력해 주세요 >>>
- 프로젝트 진행중
- # 개시글이 등록되었습니다.
-
- * 게시글 등록 과정
-   1. Post 인스턴스 생성
-    - 속성 : 글번호, 제목, 내용, 조회수
-   2. Post 리스트에 저장
-'''
-
+import os
+import csv
 from Post import Post
-from Post_Loading import post_list  # 실제 post_list와 연결 x ! main.py 참고!
+from Post_Loading import post_list
 
+
+# 파일 경로 설정
+file_path = "./Prac1_ConsoleBlog/data.csv"
+
+# post 객체를 저장할 리스트 생성
+post_list = []
+
+# data.csv 파일이 있다면
+if os.path.exists(file_path) :
+    # 게시글 로딩
+    print("게시글 로딩중...")
+    f = open(file_path, "r", encoding = "UTF-8")
+    reader = csv.reader(f)
+    for data in reader : 
+        # Post 인스턴스 생성하기
+        post = Post(int(data[0]), data[1], data[2], int(data[3]))
+        post_list.append(post)
+else :
+    f = open(file_path, "w", encoding = "UTF-8", newline="")
+    f.close()
 
 # 게시글 쓰기
 def write_post() :
