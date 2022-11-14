@@ -27,7 +27,7 @@
 '''
 
 from Post import Post
-from Post_Loading import post_list  # 실제 post_list와 연결 x ! main.py 참고!
+from Post_Loading import post_list 
 
 
 # 게시글 쓰기
