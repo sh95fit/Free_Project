@@ -10,7 +10,6 @@
 - 조회수 증가 및 상세 내용 출력
 - 수정, 삭제 기능을 수행할 때 Post 객체 넘겨주기
 '''
-from Post import Post
 from Post_Loading import post_list 
 
 
