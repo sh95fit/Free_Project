@@ -22,6 +22,7 @@ def list_post() :
     for post in post_list :
         print("번호 : ", post.get_id())
         print("제목 : ", post.get_title())
+        print("본문 : ", post.get_content())
         print("조회수 : ", post.get_views_count())
         print("")
         id_list.append(post.get_id())
