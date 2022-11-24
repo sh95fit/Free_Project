@@ -17,7 +17,8 @@ req = requests.get(CIR_url, headers = info.hdr)
 
 if str(req.status_code) == '200' :
     data = re.findall('(?<=<con>)\w{0,}(?=<\/con>)', req.text)
-    print(data[0])
+#    print(data[0])
+#    print(len(data[0]))
 
 #req = requests.get("https://thingplugpf.sktiot.com:9443/0060231000000687/v1_0/remoteCSE-0000068740ca63fffe102995/container-LoRa/latest", headers = info.hdr)
 #print(req)
