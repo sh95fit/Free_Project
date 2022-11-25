@@ -1,0 +1,2 @@
+device-id,src,phase,multi,code,lerr,inv,inv2,inv3,inv4,inv5,inv6,ina,ina2,ina3,ina4,ina5,ina6,inp,outv,outvr,outvs,outvt,outa,outar,outas,outat,outp,pf,frq,cpg,ec
+0000068740ca63fffe102995,1,1,1,1,0,253,253,0,0,0,0,7.5,0.0,0.0,0.0,0.0,0.0,1895,229,0,0,0,8.0,0,0,0,1828,990,600,2049000,0
