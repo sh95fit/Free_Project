@@ -42,13 +42,13 @@ def Data_save() :
         f = open("./Prac3_Lora_data_collection/"+filename, 'r')
         reader = csv.reader(f)
         last_data = list(reader)[-1]
-        del last_data[3:5]
+    #    del last_data[3:5]
     #    last_data = (list(map(str,status[1:])))
     f.close
 
     nowtime = now.strftime("%H%M")
 
-    while int(nowtime) <= 2000 :
+    while int(nowtime) <= 2400 :
 
         print(last_data[1:])
         print(now_data)
@@ -64,7 +64,7 @@ def Data_save() :
 
             writer.writerow(raw_data)
 
-            del raw_data[2:4]
+    #        del raw_data[2:4]
             last_data = list(map(str,raw_data))
 
             f.close
@@ -75,5 +75,5 @@ def Data_save() :
         nowtime = now.strftime("%H%M")
 
         raw_data = list(LP.LE().values())
-        del raw_data[2:4]
+    #    del raw_data[2:4]
         now_data = list(map(str,raw_data))
