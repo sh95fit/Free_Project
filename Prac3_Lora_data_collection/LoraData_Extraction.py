@@ -11,16 +11,19 @@ import Device_select
 #print(ID.LTID.index("00000687702c1ffffe5be270"))
 #print(ID.LTID[3])
 
-# Lora의 특정 디바이스 데이터 불러오기  (contentInstanceRetrieve 활용)
-CIR_url = f"{info.ThingplugApiUrl}/{info.App_EUI}/{info.version}/remoteCSE-{ID.LTID[Device_select.num]}/container-{info.container}/latest"
-#print(CIR_url)
-req = requests.get(CIR_url, headers = info.hdr)
+def DS() :
+    # Lora의 특정 디바이스 데이터 불러오기  (contentInstanceRetrieve 활용)
+    CIR_url = f"{info.ThingplugApiUrl}/{info.App_EUI}/{info.version}/remoteCSE-{ID.LTID[Device_select.num]}/container-{info.container}/latest"
+    #print(CIR_url)
+    req = requests.get(CIR_url, headers = info.hdr)
 
 
-if str(req.status_code) == '200' :
-    data = re.findall('(?<=<con>)\w{0,}(?=<\/con>)', req.text)
-#    print(data[0])
-#    print(len(data[0]))
+    if str(req.status_code) == '200' :
+        data = re.findall('(?<=<con>)\w{0,}(?=<\/con>)', req.text)
+#        print(data[0])
+        print("신규 데이터 불러오기 성공")
+    #    print(len(data[0]))
 
-#req = requests.get("https://thingplugpf.sktiot.com:9443/0060231000000687/v1_0/remoteCSE-0000068740ca63fffe102995/container-LoRa/latest", headers = info.hdr)
-#print(req)
+    return data
+    #req = requests.get("https://thingplugpf.sktiot.com:9443/0060231000000687/v1_0/remoteCSE-0000068740ca63fffe102995/container-LoRa/latest", headers = info.hdr)
+    #print(req)
