@@ -73,4 +73,4 @@ res = {
 'pf' : pf, 'frq' : frq, 'cpg' : cpg, 'ec' : ec
 }
 
-print(res)
+#print(res)

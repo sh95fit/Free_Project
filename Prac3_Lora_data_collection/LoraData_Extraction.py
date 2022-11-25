@@ -7,7 +7,7 @@ from Thingplug_info import Thingplug_info as info
 # LTID 불러오기 확인
 # print(ID.LTID)
 #print(ID.LTID.index("0000068740ca63fffe102995"))
-print(ID.LTID.index("00000687702c1ffffe5be270"))
+#print(ID.LTID.index("00000687702c1ffffe5be270"))
 #print(ID.LTID[3])
 
 # Lora의 특정 디바이스 데이터 불러오기  (contentInstanceRetrieve 활용)
