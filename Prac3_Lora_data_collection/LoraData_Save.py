@@ -28,9 +28,10 @@ def Data_save() :
 
 #        raw_data = list(LP.res.values())
         raw_data = list(LP.LE().values())
-        now_data = raw_data[1:]
+#        now_data = raw_data[1:]   # 적용 불가!
         raw_data.insert(0,ID.LTID[Device_select.num])
-        writer.writerow(raw_data)
+        now_data = list(map(str,raw_data[1:]))
+#        writer.writerow(raw_data)
         f.close
 
 
@@ -53,19 +54,21 @@ def Data_save() :
         print(last_data[1:])
         print(now_data)
 
-        if now_data != last_data[1:] :
+        if now_data != last_data[1:] and now_data != [] :
 
             f = open("./Prac3_Lora_data_collection/"+filename, 'a', newline='')
             writer = csv.writer(f)
 
 #            raw_data = list(LP.res.values())
-            raw_data = list(LP.LE().values())
-            raw_data.insert(0,ID.LTID[Device_select.num])
-
-            writer.writerow(raw_data)
+#            raw_data = list(LP.LE().values())
+#            raw_data.insert(0,ID.LTID[Device_select.num])
+            now_data.insert(0,ID.LTID[Device_select.num])
+            print(now_data)
+            writer.writerow(now_data)
 
     #        del raw_data[2:4]
-            last_data = list(map(str,raw_data))
+#            last_data = list(map(str,raw_data))
+            last_data = list(map(str,now_data))
 
             f.close
             print("%s시 데이터가 저장되었습니다."%(nowtime))
