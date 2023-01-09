@@ -1,0 +1,1 @@
+export PATH=/c/Python311:$PATH
