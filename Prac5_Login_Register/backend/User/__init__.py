@@ -19,7 +19,7 @@ def create_app():
 
 
     """ === Routes Init === """
-    from User.routes import auth_route
+    from .routes import auth_route
     app.register_blueprint(auth_route.bp)
 
     '''DB INIT (sqlite의 경우 배치로 처리)'''
@@ -31,6 +31,10 @@ def create_app():
         migrate.init_app(app, db, render_as_batch=True)
     else:
         migrate.init_app(app, db)
+
+    '''Restx Init'''
+    from .apis import blueprint as api
+    app.register_blueprint(api)
 
 
     @app.errorhandler(404)
