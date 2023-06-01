@@ -35,7 +35,8 @@ def create_app():
     '''Restx Init'''
     from .apis import blueprint as api
     app.register_blueprint(api)
-
+    # 세부 내용을 리스트 형태로 표시 (앤드포인트에 대한 요약정보만 펼쳐서 표시)
+    app.config['SWAGGER_UI_DOC_EXPANSION'] = 'list'
 
     @app.errorhandler(404)
     def page_404(error):
