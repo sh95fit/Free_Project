@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
   // useEffect(() => {
-    // fetch("/test").then(
+    // fetch("/auth/test").then(
     //   res => res.json()
     // ).then(
     //   data => console.log(data)
