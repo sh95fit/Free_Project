@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'SocketTest.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.1
+## Created by: Qt User Interface Compiler version 6.4.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -23,7 +23,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(712, 382)
+        MainWindow.resize(712, 442)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.title = QLabel(self.centralwidget)
@@ -194,17 +194,17 @@ class Ui_MainWindow(object):
         self.run_btn = QPushButton(self.centralwidget)
         self.run_btn.setObjectName(u"run_btn")
         self.run_btn.setEnabled(False)
-        self.run_btn.setGeometry(QRect(10, 330, 431, 41))
+        self.run_btn.setGeometry(QRect(10, 390, 431, 41))
         self.exit_btn = QPushButton(self.centralwidget)
         self.exit_btn.setObjectName(u"exit_btn")
-        self.exit_btn.setGeometry(QRect(450, 330, 251, 41))
+        self.exit_btn.setGeometry(QRect(450, 390, 251, 41))
         self.test_result = QGroupBox(self.centralwidget)
         self.test_result.setObjectName(u"test_result")
-        self.test_result.setGeometry(QRect(10, 257, 691, 61))
+        self.test_result.setGeometry(QRect(10, 257, 691, 121))
         self.test_result.setFont(font1)
         self.com_result = QLabel(self.test_result)
         self.com_result.setObjectName(u"com_result")
-        self.com_result.setGeometry(QRect(16, 26, 661, 21))
+        self.com_result.setGeometry(QRect(16, 20, 661, 91))
         font3 = QFont()
         font3.setPointSize(12)
         font3.setBold(False)

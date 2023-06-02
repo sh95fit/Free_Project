@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>712</width>
-    <height>382</height>
+    <height>442</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -637,7 +637,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>330</y>
+      <y>390</y>
       <width>431</width>
       <height>41</height>
      </rect>
@@ -650,7 +650,7 @@
     <property name="geometry">
      <rect>
       <x>450</x>
-      <y>330</y>
+      <y>390</y>
       <width>251</width>
       <height>41</height>
      </rect>
@@ -665,7 +665,7 @@
       <x>10</x>
       <y>257</y>
       <width>691</width>
-      <height>61</height>
+      <height>121</height>
      </rect>
     </property>
     <property name="font">
@@ -680,9 +680,9 @@
      <property name="geometry">
       <rect>
        <x>16</x>
-       <y>26</y>
+       <y>20</y>
        <width>661</width>
-       <height>21</height>
+       <height>91</height>
       </rect>
      </property>
      <property name="font">
@@ -704,10 +704,10 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="select_modem"/>
-  <buttongroup name="select_type"/>
-  <buttongroup name="select_mppt"/>
   <buttongroup name="select_err"/>
   <buttongroup name="select_com"/>
+  <buttongroup name="select_modem"/>
+  <buttongroup name="select_mppt"/>
+  <buttongroup name="select_type"/>
  </buttongroups>
 </ui>
