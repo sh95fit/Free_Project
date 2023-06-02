@@ -16,6 +16,16 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.ui.input_ip_addr.setFocus()
         self.ui.com_result.setText("유효성 검사를 실시하세요.")
+        self.radio_buttons = {1:self.ui.select_modem.checkedButton().text(), 2:self.ui.select_type.checkedButton().text(), 3:self.ui.select_mppt.checkedButton().text(), 4:self.ui.select_err.checkedButton().text(), 5:self.ui.select_com.checkedButton().text()}
+        for i in range(1,16) :
+            self.ui.err_level.addItem(f"{i:02}")
+
+        
+        self.ui.select_modem.buttonToggled.connect(lambda : self.radio_btn_handler(1, self.ui.select_modem.checkedButton().text()))
+        self.ui.select_type.buttonToggled.connect(lambda : self.radio_btn_handler(2, self.ui.select_type.checkedButton().text()))
+        self.ui.select_mppt.buttonToggled.connect(lambda : self.radio_btn_handler(3, self.ui.select_mppt.checkedButton().text()))
+        self.ui.select_err.buttonToggled.connect(lambda : self.radio_btn_handler(4, self.ui.select_err.checkedButton().text()))
+        self.ui.select_com.buttonToggled.connect(lambda : self.radio_btn_handler(5, self.ui.select_com.checkedButton().text()))
 
         self.ui.input_ip_addr.textChanged.connect(self.check_input_info)
         self.ui.input_port.textChanged.connect(self.check_input_info)
@@ -23,7 +33,7 @@ class MainWindow(QMainWindow):
         self.ui.exit_btn.clicked.connect(self.confirm_exit)
 
         self.ui.com_check.clicked.connect(lambda : self.connection_test(self.ui.input_ip_addr.text(), int(self.ui.input_port.text())))
-        
+
 
     # 유효성 검사를 통해 조건이 충족하는 경우에만 연결 유효성 검사 버튼 활성화
     def check_input_info(self) :
@@ -70,6 +80,21 @@ class MainWindow(QMainWindow):
             self.ui.com_result.setStyleSheet("color : red; font-weight : bold;")
             self.ui.com_result.setWordWrap(True)
             self.ui.com_result.setText(f"소켓 통신 실패\n({str(e)})")
+
+    def radio_btn_handler(self, key, new_value):
+        # 선택된 라디오 버튼을 확인하고 해당 라디오 버튼의 인덱스 출력
+        if key in self.radio_buttons :
+            self.radio_buttons[key] = new_value 
+            if self.radio_buttons[4] == "에러 적용" :
+                self.ui.err_level.setEnabled(True)
+            else :
+                self.ui.err_level.setEnabled(False)
+            # print(self.radio_buttons)
+        else :
+            pass
+
+    # def radio_btn_handler(self) :
+    #     if
 
 
 if __name__ == "__main__":
