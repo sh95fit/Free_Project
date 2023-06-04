@@ -151,12 +151,13 @@ class MainWindow(QMainWindow):
 
         self.ui.com_result.setStyleSheet("color : green; font-weight : bold;")
         self.ui.com_result.setWordWrap(True)
-        self.ui.com_result.setText("프로그램 정상 실행 중...")
+        self.ui.com_result.setText(f"| 모뎀: {self.radio_buttons[1]} | 상 구분: {self.radio_buttons[2]} | MPPT: {self.radio_buttons[3]} | 에러 상태: {self.radio_buttons[4]}({self.ui.err_level.currentText()}) | 통신 상태: {self.radio_buttons[5]} |\n프로그램 정상 실행 중...")
 
 
         # 실행 시 최소화
         # self.showMinimized()
-        self.hide()
+        # 숨김 처리
+        # self.hide()
 
         self.initial_execution()
 
@@ -195,6 +196,11 @@ class MainWindow(QMainWindow):
         if reason == QSystemTrayIcon.Trigger :
             self.showNormal()
 
+
+    def closeEvent(self, event) :
+        if self.run_status == 1 :
+            event.ignore()
+            self.hide()
 
 
 if __name__ == "__main__":
