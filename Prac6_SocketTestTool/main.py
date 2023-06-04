@@ -1,7 +1,7 @@
 # from PySide6 import QtCore, QtWidgets, QtGui
-from PySide6.QtWidgets import QMainWindow, QApplication, QLineEdit, QMessageBox, QVBoxLayout, QLabel, QDialog
+from PySide6.QtWidgets import QMainWindow, QApplication, QLineEdit, QMessageBox, QVBoxLayout, QLabel, QDialog, QSystemTrayIcon, QMenu
 from ui import Ui_MainWindow
-from PySide6.QtGui import QValidator, QRegularExpressionValidator
+from PySide6.QtGui import QValidator, QRegularExpressionValidator, QIcon
 from PySide6.QtCore import Qt, QThread, Signal, Slot, QTimer
 
 import sys
@@ -26,6 +26,12 @@ class MainWindow(QMainWindow):
         
         self.timer = QTimer()
         self.timer.timeout.connect(self.do_work)
+
+        self.tray_icon = QSystemTrayIcon(QIcon("C:/Users/tpgns/Desktop/Hun's/Hun's/sh95fit_git/Free_Project/Prac6_SocketTestTool/tool_favicon.png"), self)
+        self.tray_icon.setToolTip("RTU Socket Client")
+        self.tray_icon.activated.connect(self.tray_icon_activated)
+        self.tray_icon.show()
+
 
         self.ui.select_modem.buttonToggled.connect(lambda : self.radio_btn_handler(1, self.ui.select_modem.checkedButton().text()))
         self.ui.select_type.buttonToggled.connect(lambda : self.radio_btn_handler(2, self.ui.select_type.checkedButton().text()))
@@ -147,6 +153,11 @@ class MainWindow(QMainWindow):
         self.ui.com_result.setWordWrap(True)
         self.ui.com_result.setText("프로그램 정상 실행 중...")
 
+
+        # 실행 시 최소화
+        # self.showMinimized()
+        self.hide()
+
         self.initial_execution()
 
         self.ui.run_btn.setEnabled(False)
@@ -180,13 +191,19 @@ class MainWindow(QMainWindow):
 #             time.sleep(60)
 #         self.finished.emit()
 
+    def tray_icon_activated(self, reason):
+        if reason == QSystemTrayIcon.Trigger :
+            self.showNormal()
 
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
+
     widget = MainWindow()
+
+    widget.setWindowIcon(QIcon("C:/Users/tpgns/Desktop/Hun's/Hun's/sh95fit_git/Free_Project/Prac6_SocketTestTool/tool_favicon.png"))
 
     widget.show()
 
