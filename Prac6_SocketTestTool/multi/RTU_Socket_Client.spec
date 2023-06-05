@@ -28,7 +28,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='RTU Socket Client',
+    name='RTU_Socket_Client',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
