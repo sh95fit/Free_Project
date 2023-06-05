@@ -193,7 +193,7 @@ class MainWindow(QMainWindow):
     # Timer로 비동기 적용
     def do_work(self):
         # 주기적으로 실행할 작업을 수행
-        if self.radio_buttons[6] == "01" :
+        if self.radio_buttons[6] == "단일" :
             send_data(self.ui.input_ip_addr.text(), self.ui.input_port.text(), self.radio_buttons[1], self.radio_buttons[2], self.radio_buttons[3], self.ui.err_level.currentText(), self.radio_buttons[5], self.count_status)
         else :
             if self.count_status <= int(self.ui.device_num.currentText()) :
@@ -210,7 +210,7 @@ class MainWindow(QMainWindow):
 
 
     def initial_execution(self):
-        if self.radio_buttons[6] == "01" :
+        if self.radio_buttons[6] == "단일" :
             send_data(self.ui.input_ip_addr.text(), self.ui.input_port.text(), self.radio_buttons[1], self.radio_buttons[2], self.radio_buttons[3], self.ui.err_level.currentText(), self.radio_buttons[5], self.count_status)
         else :
             if self.count_status <= int(self.ui.device_num.currentText()) :
