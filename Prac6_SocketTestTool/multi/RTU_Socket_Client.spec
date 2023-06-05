@@ -8,7 +8,7 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('main_favicon.ico', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -41,5 +41,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['C:\\Users\\user\\Desktop\\KIMSEHUN\\develop\\Free_Project\\Prac6_SocketTestTool\\main_favicon.ico'],
+    icon=['main_favicon.ico'],
 )
