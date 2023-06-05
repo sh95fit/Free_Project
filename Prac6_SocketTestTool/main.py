@@ -1,13 +1,16 @@
 # from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtWidgets import QMainWindow, QApplication, QLineEdit, QMessageBox, QVBoxLayout, QLabel, QDialog, QSystemTrayIcon, QMenu
 from ui import Ui_MainWindow
-from PySide6.QtGui import QValidator, QRegularExpressionValidator, QIcon
+from PySide6.QtGui import QValidator, QRegularExpressionValidator, QIcon, QPixmap
 from PySide6.QtCore import Qt, QThread, Signal, Slot, QTimer
+from data_packet import send_data
 
-import sys
+import sys, os
 import socket
 import time
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+image_path = os.path.join(current_dir, "main_favicon.ico")
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -23,11 +26,11 @@ class MainWindow(QMainWindow):
         self.ui.err_level.setCurrentIndex(0)
 
         self.run_status = 0
-        
+
         self.timer = QTimer()
         self.timer.timeout.connect(self.do_work)
 
-        self.tray_icon = QSystemTrayIcon(QIcon("C:/Users/tpgns/Desktop/Hun's/Hun's/sh95fit_git/Free_Project/Prac6_SocketTestTool/tool_favicon.png"), self)
+        self.tray_icon = QSystemTrayIcon(QIcon(image_path), self)
         self.tray_icon.setToolTip("RTU Socket Client")
         self.tray_icon.activated.connect(self.tray_icon_activated)
         self.tray_icon.show()
@@ -42,7 +45,7 @@ class MainWindow(QMainWindow):
         self.ui.input_ip_addr.textChanged.connect(self.check_input_info)
         self.ui.input_port.textChanged.connect(self.check_input_info)
 
-        # 스레드 중지 및 종료 처리 
+        # 스레드 중지 및 종료 처리
         self.ui.exit_btn.clicked.connect(self.confirm_exit)
 
         self.ui.com_check.clicked.connect(lambda : self.connection_test(self.ui.input_ip_addr.text(), int(self.ui.input_port.text())))
@@ -64,7 +67,7 @@ class MainWindow(QMainWindow):
         validator = QRegularExpressionValidator()
         validator.setRegularExpression(regex)
         self.ui.input_ip_addr.setValidator(validator)
-        
+
         state, _, _ = validator.validate(self.ui.input_ip_addr.text(), 0)
 
         if state == QRegularExpressionValidator.Acceptable :
@@ -124,7 +127,7 @@ class MainWindow(QMainWindow):
     def radio_btn_handler(self, key, new_value):
         # 선택된 라디오 버튼을 확인하고 해당 라디오 버튼의 인덱스 출력
         if key in self.radio_buttons :
-            self.radio_buttons[key] = new_value 
+            self.radio_buttons[key] = new_value
             if self.radio_buttons[4] == "에러 적용" :
                 self.ui.err_level.setEnabled(True)
             else :
@@ -165,7 +168,7 @@ class MainWindow(QMainWindow):
         self.ui.com_check.setEnabled(False)
         # self.worker_thread.start()
 
-        self.timer.start(5000)
+        self.timer.start(60000)
 
     # @Slot()
     # def on_thread_finished(self):
@@ -175,11 +178,13 @@ class MainWindow(QMainWindow):
     # Timer로 비동기 적용
     def do_work(self):
         # 주기적으로 실행할 작업을 수행
-        print("주기적인 작업 실행...")   
+        send_data(self.ui.input_ip_addr.text(), self.ui.input_port.text(), self.radio_buttons[1], self.radio_buttons[2], self.radio_buttons[3], self.ui.err_level.currentText(), self.radio_buttons[5])
+        # print("주기적인 작업 실행...")
 
 
     def initial_execution(self):
-        print("최초 작업 실행...")   
+        send_data(self.ui.input_ip_addr.text(), self.ui.input_port.text(), self.radio_buttons[1], self.radio_buttons[2], self.radio_buttons[3], self.ui.err_level.currentText(), self.radio_buttons[5])
+        # print("최초 작업 실행...")
 
 # 비동기 형태로 작업 수행
 # class WorkerThread(QThread):
@@ -209,7 +214,9 @@ if __name__ == "__main__":
 
     widget = MainWindow()
 
-    widget.setWindowIcon(QIcon("C:/Users/tpgns/Desktop/Hun's/Hun's/sh95fit_git/Free_Project/Prac6_SocketTestTool/tool_favicon.png"))
+    # widget.setWindowIcon(QIcon("C:/Users/user/Desktop/KIMSEHUN/develop/Free_Project/Prac6_SocketTestTool/main_favicon.ico"))
+    # widget.setWindowIcon(QIcon("C:\\Users\\user\\Desktop\\KIMSEHUN\\develop\\Free_Project\\Prac6_SocketTestTool\\main_favicon.ico"))
+    widget.setWindowIcon(QIcon(image_path))
 
     widget.show()
 
