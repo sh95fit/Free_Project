@@ -2,7 +2,7 @@ import socket
 
 def send_data(ip_addr, port, modem, type, mppt, err, com, count):
   type_status = {"단상":"01", "3상":"02"}
-  com_status = {"정상":"00", "통신 실패":"57"}
+  com_status = {"정상":"00", "통신 실패":"39"}
   station_num = f"{count:02}"
   data = ""
 
