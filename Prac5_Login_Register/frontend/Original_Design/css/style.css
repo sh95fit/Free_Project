@@ -245,7 +245,7 @@ span {
 .portfolio-image {
   /* width: 100%; */
   width: 400px;
-  height: 230px;
+  height: 250px;
   transition: .5s ease;
 }
 
@@ -296,4 +296,52 @@ span {
 .portfolio-layer a i {
   font-size: 2rem;
   color: var(--second-bg-color);
+}
+
+.contact h2 {
+  margin-bottom: 3rem;
+}
+
+.contact form {
+  max-width: 70rem;
+  margin: 1rem auto;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.contact form .input-box {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.contact form .input-box input,
+.contact form textarea {
+  width: 100%;
+  padding: 1.5rem;
+  font-size: 1.6rem;
+  color: var(--text-color);
+  background: var(--second-bg-color);
+  border-radius: .8rem;
+  margin: .7rem 0;
+}
+
+.contact form .input-box input {
+  width: 49%;
+}
+
+.contact form .input-box input[type="number"]::-webkit-inner-spin-button,
+.contact form .input-box input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.contact form textarea {
+  resize: none;
+}
+
+.contact form .btn {
+  margin-top: 1.5rem;
+  cursor: pointer;
 }
