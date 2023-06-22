@@ -11,12 +11,12 @@ def index():
     return "Login, Register"
 
 
-# @bp.route('/test')
-# def test():
-#     data = {
-#         "member": [
-#             {"id": 1, "test": "good"},
-#             {"id": 2, "Let": "develop"}
-#         ]
-#     }
-#     return jsonify(data)
+@bp.route('/test')
+def test():
+    data = {
+        "member": [
+            {"id": 1, "test": "good"},
+            {"id": 2, "Let": "develop"}
+        ]
+    }
+    return jsonify(data)
