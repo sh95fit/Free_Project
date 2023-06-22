@@ -1,5 +1,11 @@
 import { useEffect } from 'react';
 import './App.css';
+import {Routes, Route, Link} from "react-router-dom";
+import Find from "./pages/auth_pages/Find";
+import Login from "./pages/auth_pages/Login";
+import SignUp from "./pages/auth_pages/SignUp";
+import Withdrawal from "./pages/auth_pages/Withdrawal";
+
 
 function App() {
 
@@ -15,7 +21,13 @@ function App() {
 
   return (
     <div className="App">
-      Test
+      <Link to="/signup">Sign Up</Link> | <Link to="/Login">Login</Link> | <Link to="/find">Find ID/PW</Link> |  <Link to="/withdrawal">Withdrawal</Link>
+      <Routes>
+        <Route path="/signup" element={<SignUp/>} />
+        <Route path="/Login" element={<Login/>} />
+        <Route path="/find" element={<Find/>} />
+        <Route path="/withdrawal" element={<Withdrawal/>} />
+      </Routes>
     </div>
   );
 }
