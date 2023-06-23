@@ -1,6 +1,8 @@
 from flask import Blueprint
 from flask_restx import Api
 
+from .login import ns as LoginNamespace
+
 blueprint = Blueprint(
     'api',
     __name__,
@@ -13,3 +15,7 @@ api = Api(
     doc='/docs',
     description="Welcome Hun's API docs"
 )
+
+
+# Add Namespace
+api.add_namespace(LoginNamespace)
