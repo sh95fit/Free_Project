@@ -10,7 +10,9 @@ import socket
 import time
 
 # 단일 파일로 작성 시 pyinstaller 코드
+# pyi-makespec --onefile main.py (미사용)
 # pyinstaller --onefile --add-data "main_favicon.ico;." --icon="main_favicon.ico" --name="RTU_Socket_Client" main.py
+# pyinstaller RTU_Socket_Client.spec
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 image_path = os.path.join(current_dir, "main_favicon.ico")
