@@ -8,6 +8,8 @@ import os
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
 
+from datetime import timedelta
+
 jwt = JWTManager()
 
 db = SQLAlchemy()
@@ -48,6 +50,8 @@ def create_app():
 
     '''JWT Init'''
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET')
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
+    app.config['JWT_REFRESH_TOKEN_EXPIRES'] = "7 day"
     jwt.init_app(app)
 
 

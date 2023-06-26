@@ -6,7 +6,7 @@ from User import db
 
 NAME = 'auth'
 
-bp = Blueprint(NAME, __name__, url_prefix='/auth')
+bp = Blueprint(NAME, __name__, url_prefix='')
 
 
 @bp.route('/')
@@ -27,8 +27,10 @@ def test():
 
 @bp.route('/register', methods=['POST'])
 def register():
+    user_type = request.json.get("user_type")
     username = request.json.get("username")
     password = request.json.get("password")
+    user_name = request.json.get("user_name")
 
     user = UserModel.query.filter_by(user_id=username).one_or_none()
 
@@ -37,8 +39,8 @@ def register():
 
     hashed_password = generate_password_hash(password)
 
-    user = UserModel(user_type=1, user_id=username,
-                     user_name='test', password=hashed_password)
+    user = UserModel(user_type=user_type, user_id=username,
+                     user_name=user_name, password=hashed_password)
     db.session.add(user)
     db.session.commit()
     return jsonify(message='user created')
