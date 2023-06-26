@@ -1,7 +1,9 @@
 from flask import Blueprint
 from flask_restx import Api
 
-from .login import ns as TestNameSpace
+from .test import ns as TestNameSpace
+from .signup import ns as SignUpNameSpace
+from .login import ns as LoginNameSpace
 
 blueprint = Blueprint(
     'api',
@@ -19,3 +21,5 @@ api = Api(
 
 # Add Namespace
 api.add_namespace(TestNameSpace)
+api.add_namespace(SignUpNameSpace)
+api.add_namespace(LoginNameSpace)
