@@ -1,27 +1,27 @@
-from fastapi import FastAPI, Depends
-from models import Test
+from fastapi import FastAPI, Depends, Path
+from models import main_models
 from datetime import datetime
-from database import SessionLocal
+from database.connection import main_db, gsrems_db
 from sqlalchemy.orm import Session
 
 
 app = FastAPI()
 
-test_raw = Test(company='UGS', api_key='serial_0000',
-                create_date=datetime.now())
+
+now = datetime.now()
+now_date = now.strftime('%Y%m%d')
+# print(now_date)
+
+# GSREMS 데이터 가져오기 테스트
 
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+@app.get("/select_data/{rtu_id}")
+async def select_data(rtu_id: int = Path(..., title='rtu_id'), db: Session = Depends(gsrems_db)):
+    result = db.execute(
+        f"SELECT * FROM gsmon_solar_data where save_time_id={now_date} and rtu_id={rtu_id} order by id desc")
+    data = [dict(row) for row in result]
 
+    if not data:
+        return {"message": "Raw data not found"}
 
-@app.post("/test")
-def create_table(db: Session = Depends(get_db)):
-    db.add(test_raw)
-    db.commit()
-
-    return test_raw
+    return {"data": data}
