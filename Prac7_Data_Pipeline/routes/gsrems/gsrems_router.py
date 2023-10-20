@@ -31,6 +31,23 @@ async def today_data(rtu_id: int, db: Session = Depends(gsrems_db)):
     return result
 
 
+@router.get("/transfer_data", response_model=List[GsremsData])
+async def transfer_data(rtu_id: int, gs_db: Session = Depends(gsrems_db), main_db: Session = Depends(main_db)):
+
+    # GSREMS 서버에서 데이터 가져오기
+    gsrems_data = gs_db.query(gsmon_solar_data).filter(
+        and_(gsmon_solar_data.c.rtu_id == rtu_id, gsmon_solar_data.c.save_time_id == now_date)).order_by(desc(gsmon_solar_data.c.save_time)).all()
+
+    main_data = []
+    for gs_data in gsrems_data:
+        main_data.append(GsmonSolarData(**gs_data))
+
+    main_db.add_all(main_data)
+    main_db.commit()
+
+    return main_data
+
+
 # # GSREMS 데이터 가져오기 테스트
 
 

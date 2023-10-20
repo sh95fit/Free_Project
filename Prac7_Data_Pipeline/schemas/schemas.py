@@ -3,9 +3,6 @@ from datetime import datetime
 
 
 class GsremsData(BaseModel):
-
-    __tablename__ = "gsmon_solar_data"
-
     id: int
     rtu_id: int
     inverter_id: int
