@@ -20,7 +20,6 @@ class GsmonSolarData(Base):
     inv5 = Column(SmallInteger)
     inv6 = Column(SmallInteger)
     ina = Column(SmallInteger)
-    ina1 = Column(SmallInteger)
     ina2 = Column(SmallInteger)
     ina3 = Column(SmallInteger)
     ina4 = Column(SmallInteger)
