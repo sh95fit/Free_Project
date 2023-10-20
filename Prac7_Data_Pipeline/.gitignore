@@ -352,5 +352,5 @@ pyrightconfig.json
 # End of https://www.toptal.com/developers/gitignore/api/python,flask,django
 
 venv
-alembic.ini
+alembic*
 migrations
