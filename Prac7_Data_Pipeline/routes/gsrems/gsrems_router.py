@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Depends, Path
+from fastapi import APIRouter, HTTPException, status, Depends, Path, Query
 from models.gsrems_models import gsmon_solar_data
 from models.main_models import GsmonSolarData
 
@@ -11,7 +11,6 @@ from sqlalchemy import and_, or_, desc
 from typing import List
 
 from datetime import datetime
-
 
 now = datetime.now()
 now_date = now.strftime('%Y%m%d')
@@ -47,6 +46,22 @@ async def transfer_data(rtu_id: int, gs_db: Session = Depends(gsrems_db), main_d
 
     return main_data
 
+
+@router.get("/transfer_period_data", response_model=List[GsremsData])
+async def transfer_data(rtu_id: int, start_date: str = Query(..., description="Start date in YYYYMMDD format"), end_date: str = Query(..., description="End date in YYYYMMDD format"), gs_db: Session = Depends(gsrems_db), main_db: Session = Depends(main_db)):
+
+    # GSREMS 서버에서 데이터 가져오기
+    gsrems_data = gs_db.query(gsmon_solar_data).filter(
+        and_(gsmon_solar_data.c.rtu_id == rtu_id, gsmon_solar_data.c.save_time_id >= start_date, gsmon_solar_data.c.save_time_id <= end_date)).order_by(desc(gsmon_solar_data.c.save_time)).all()
+
+    main_data = []
+    for gs_data in gsrems_data:
+        main_data.append(GsmonSolarData(**gs_data))
+
+    main_db.add_all(main_data)
+    main_db.commit()
+
+    return main_data
 
 # # GSREMS 데이터 가져오기 테스트
 
