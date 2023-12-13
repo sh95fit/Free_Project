@@ -13,7 +13,8 @@ hash_keys = get_hash_keys(key)
 print("Hash Key : ", hash_keys[0])
 print("Hash IV : ", hash_keys[1])
 
-plain_text = "test_password"
+
+plain_text = input()
 
 encrypt_text = encrypt_string_to_bytes_aes(
     plain_text, hash_keys[0], hash_keys[1])
