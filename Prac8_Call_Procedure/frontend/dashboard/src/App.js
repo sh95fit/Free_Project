@@ -10,14 +10,13 @@ const fetchData = async (url) => {
 };
 
 const App = () => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchDataFromAPI = async () => {
       try {
-        const apiUrl = 'http://localhost:8000';
+        const apiUrl = 'http://localhost:8000';  // FastAPI 서버의 주소로 수정
         const result = await fetchData(`${apiUrl}/api/data`);
-        console.log('API Response:', result); // API 응답을 콘솔에 출력
         setData(result);
       } catch (error) {
         console.error('Error in component:', error);
@@ -27,10 +26,9 @@ const App = () => {
     fetchDataFromAPI();
   }, []);
 
-
   return (
     <div>
-      <h1>{JSON.stringify(data)}</h1>
+      <h1>{data !== null ? data : "Loading..."}</h1>
     </div>
   );
 };
