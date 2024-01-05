@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+
+  frontend:
+    build:
+      context: ./frontend/dashboard/.
+      dockerfile: Dockerfile
+    container_name: react_frontend
+    tty: true
+    ports: 
+      - 3333:3000
+    volumes:
+      - ./frontend/dashboard:/src
+      - ./frontend/dashboard/assets:/assets
+    depends_on:
+      - backend
+    networks:
+      - dash_net
+    command: npm run start
+
+  backend:
+    build:
+      context: ./backend/.
+      dockerfile: Dockerfile
+    container_name: fastapi_backend
+    tty: true
+    ports:
+      - 8888:8000
+    volumes:
+      - ./backend:/src
+      - ./backend/assets:/assets
+    networks:
+      - dash_net
+    command: uvicorn main:app --host 0.0.0.0 --reload --port 8000
+    
+networks:
+  dash_net:
+      driver: bridge
+    
