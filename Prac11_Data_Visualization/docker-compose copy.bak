@@ -41,6 +41,21 @@ services:
           - backend
     command: uvicorn main:app --host 0.0.0.0 --reload --port 8000
 
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: DA_nginx
+    ports:
+      - "80:80"
+    networks:
+      dash_net:
+        aliases:
+          - nginx
+    depends_on:
+      - fastapi
+      - react
+
 networks:
   dash_net:
-      driver: bridge
+    driver: bridge
