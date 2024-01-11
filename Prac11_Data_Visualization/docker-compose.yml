@@ -13,7 +13,6 @@ services:
     volumes:
       - ./Frontend/dashboard:/src
       - ./Frontend/dashboard/assets:/assets
-      - ./Frontend/dashboard/node_modules:/src/node_modules
     depends_on:
       - backend
     networks:

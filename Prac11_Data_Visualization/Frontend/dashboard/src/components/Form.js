@@ -11,19 +11,14 @@ const Form = ({ onSubmit }) => {
     return formattedDate;
   };
 
-  const handleStartDateChange = (e) => {
-    const formattedDate = formatDate(e.target.value);
-    setStartDate(formattedDate);
-  };
-
-  const handleEndDateChange = (e) => {
-    const formattedDate = formatDate(e.target.value);
-    setEndDate(formattedDate);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ untid, ivtid, startDate, endDate });
+
+    // Convert date format before calling onSubmit
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+
+    onSubmit({ untid, ivtid, startDate: formattedStartDate, endDate: formattedEndDate });
   };
 
   return (
@@ -38,11 +33,11 @@ const Form = ({ onSubmit }) => {
       </label>
       <label>
         Start Date:
-        <input type="date" value={startDate} onChange={handleStartDateChange} />
+        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
       </label>
       <label>
         End Date:
-        <input type="date" value={endDate} onChange={handleEndDateChange} />
+        <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
       </label>
       <button type="submit">Fetch Data</button>
     </form>

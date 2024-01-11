@@ -1,6 +1,28 @@
 // Chart.js
 import React from "react";
-import { Bar } from "react-chartjs-2";
+// import "chart.js/auto";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Line } from "react-chartjs-2";
+
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const Chart = ({ data }) => {
   // 차트에 사용할 데이터 포맷
@@ -18,34 +40,21 @@ const Chart = ({ data }) => {
   };
 
   const chartOptions = {
-    scales: {
-      x: [
-        {
-          type: "time",
-          time: {
-            unit: "day",
-            tooltipFormat: "YYYY-MM-DD HH:mm:ss",
-          },
-          title: {
-            display: true,
-            text: "UPDDATIME",
-          },
+    responsive: true,
+    plugins: {
+      legend:{
+          position: 'top',
         },
-      ],
-      y: [
-        {
-          title: {
-            display: true,
-            text: "TPG",
-          },
+      title:{
+          display: true,
+          text: "Daily Inverter Chart"
         },
-      ],
     },
   };
 
   return (
     <div>
-      <Bar data={chartData} options={chartOptions} />
+      <Line data={chartData} options={chartOptions} />
     </div>
   );
 };
