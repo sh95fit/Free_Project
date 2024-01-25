@@ -1,4 +1,5 @@
-from sqlalchemy import Column, String, Integer, Float, DateTime, func, select, VARCHAR, MetaData, Table
+from sqlalchemy import Column, String, Integer, Float, DateTime, func, select, VARCHAR, MetaData, Table, DECIMAL, text
+from sqlalchemy.orm import mapper
 from database.session.more_db import engine, Base, Session
 from pydantic import BaseModel
 
@@ -74,6 +75,104 @@ class get_cstpwrmap(Base):
 
     def as_dict(self):
         return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+
+
+# 인버터별 발전량 데이터 받아오기
+def create_dynamic_model_class(table_name, base=Base):
+    class get_lawdata(base):
+        __tablename__ = table_name
+        __table_args__ = {'extend_existing': True}
+        UNTID = Column(VARCHAR(20), primary_key=True, comment='시공사ID')
+        IVTID = Column(VARCHAR(20), primary_key=True, comment='INVERTERID')
+        EVTDATME = Column(VARCHAR(25), primary_key=True, comment='날짜시간')
+        READTIME = Column(VARCHAR(20), comment='설비읽은시간')
+        PHASE = Column(Integer, comment='단/삼상')
+        STATIONNO = Column(Integer, primary_key=True, comment='국번')
+        ERRCD = Column(Integer, comment='통신오류')
+        INV1 = Column(Integer, comment='입력 전압1')
+        INV2 = Column(Integer, comment='입력 전압2')
+        INV3 = Column(Integer, comment='입력 전압3')
+        INV4 = Column(Integer, comment='입력 전압4')
+        INV5 = Column(Integer, comment='입력 전압5')
+        INV6 = Column(Integer, comment='입력 전압6')
+        INV7 = Column(Integer, comment='입력 전압7')
+        INV8 = Column(Integer, comment='입력 전압8')
+        INV9 = Column(Integer, comment='입력 전압9')
+        INV10 = Column(Integer, comment='입력 전압10')
+        INV11 = Column(Integer, comment='입력 전압11')
+        INV12 = Column(Integer, comment='입력 전압12')
+        INV13 = Column(Integer, comment='입력 전압13')
+        INV14 = Column(Integer, comment='입력 전압14')
+        INV15 = Column(Integer, comment='입력 전압15')
+        INV16 = Column(Integer, comment='입력 전압16')
+        INV17 = Column(Integer, comment='입력 전압17')
+        INV18 = Column(Integer, comment='입력 전압18')
+        INV19 = Column(Integer, comment='입력 전압19')
+        INV20 = Column(Integer, comment='입력 전압20')
+        INA1 = Column(Integer, comment='입력 전류1')
+        INA2 = Column(Integer, comment='입력 전류2')
+        INA3 = Column(Integer, comment='입력 전류3')
+        INA4 = Column(Integer, comment='입력 전류4')
+        INA5 = Column(Integer, comment='입력 전류5')
+        INA6 = Column(Integer, comment='입력 전류6')
+        INA7 = Column(Integer, comment='입력 전류7')
+        INA8 = Column(Integer, comment='입력 전류8')
+        INA9 = Column(Integer, comment='입력 전류9')
+        INA10 = Column(Integer, comment='입력 전류10')
+        INA11 = Column(Integer, comment='입력 전류11')
+        INA12 = Column(Integer, comment='입력 전류12')
+        INA13 = Column(Integer, comment='입력 전류13')
+        INA14 = Column(Integer, comment='입력 전류14')
+        INA15 = Column(Integer, comment='입력 전류15')
+        INA16 = Column(Integer, comment='입력 전류16')
+        INA17 = Column(Integer, comment='입력 전류17')
+        INA18 = Column(Integer, comment='입력 전류18')
+        INA19 = Column(Integer, comment='입력 전류19')
+        INA20 = Column(Integer, comment='입력 전류20')
+        INP = Column(Integer, comment='입력 전력')
+        OUTV = Column(Integer, comment='단상 출력 전압')
+        OUTA = Column(Integer, comment='단상 출력 전류')
+        OUTVR = Column(Integer, comment='삼상 출력 전압 R')
+        OURVS = Column(Integer, comment='삼상 출력 전압 S')
+        OUTVT = Column(Integer, comment='삼상 출력 전압 T')
+        OUTAR = Column(Integer, comment='삼상 출력 전류 R')
+        OUTAS = Column(Integer, comment='삼상 출력 전류 S')
+        OUTAT = Column(Integer, comment='삼상 출력 전류 T')
+        OUTP = Column(Integer, comment='출력 전력')
+        PF = Column(Float, comment='Power factor')
+        FRQ = Column(Float, comment='주파수')
+        TEMP = Column(Float, comment='온도')
+        TPG = Column(DECIMAL(20, 0), comment='당일 발전량')
+        RUNTYPE = Column(Integer, comment='작동 여부')
+        CPG = Column(DECIMAL(20, 0), comment='누적 발전량')
+        INVERRCD = Column(Integer, comment='인버터 에러코드')
+        ONHOUR = Column(Integer, comment='연속 동작 시간')
+        IVTFIRMVER = Column(Integer, comment='인버터 펌웨어 버전')
+        STATUS01 = Column(Integer, comment='상태코드1')
+        STATUS02 = Column(Integer, comment='상태코드2')
+        STATUS03 = Column(Integer, comment='상태코드3')
+        STATUS04 = Column(Integer, comment='상태코드4')
+        STATUS05 = Column(Integer, comment='상태코드5')
+        STATUS06 = Column(Integer, comment='상태코드6')
+        STATUS07 = Column(Integer, comment='상태코드7')
+        STATUS08 = Column(Integer, comment='상태코드8')
+        STATUS09 = Column(Integer, comment='상태코드9')
+        STATUS10 = Column(Integer, comment='상태코드10')
+        STATUS11 = Column(Integer, comment='상태코드11')
+        EVTDATE = Column(VARCHAR(10), comment='날짜')
+        VERSION = Column(Integer, comment='버전')
+        USETYPE = Column(VARCHAR(1), default='Y', comment='사용구분')
+        UPDDATIME = Column(DateTime, comment='업데이트시간')
+        TOTAL_CO2 = Column(
+            Integer, comment='누적 CO2 저감량 CPG(kWh) * 0.46625/1000')
+        TODAY_CO2 = Column(
+            Integer, comment='당일 CO2 저감량 TPG(kWh) * 0.46625/1000')
+        GENERATION_TIME = Column(Integer, comment='발전시간')
+
+        def as_dict(self):
+            return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+
+    return get_lawdata
 
 
 metadata = MetaData()
