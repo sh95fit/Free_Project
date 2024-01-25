@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Integer, Float, DateTime, func, select, VARCHAR, MetaData, Table, DECIMAL, text
-from sqlalchemy.orm import mapper
+from sqlalchemy.orm import declarative_base
 from database.session.more_db import engine, Base, Session
 from pydantic import BaseModel
 
@@ -78,8 +78,11 @@ class get_cstpwrmap(Base):
 
 
 # 인버터별 발전량 데이터 받아오기
-def create_dynamic_model_class(table_name, base=Base):
-    class get_lawdata(base):
+def create_dynamic_model_class(table_name):
+    # 모델의 충돌을 방지 (class_registry를 빈 딕셔너리로 지정하여 비움으로써 새로운 세션에서 중복을 방지)
+    DynamicBase = declarative_base(class_registry=dict())
+
+    class get_lawdata(DynamicBase):
         __tablename__ = table_name
         __table_args__ = {'extend_existing': True}
         UNTID = Column(VARCHAR(20), primary_key=True, comment='시공사ID')
@@ -99,16 +102,16 @@ def create_dynamic_model_class(table_name, base=Base):
         INV8 = Column(Integer, comment='입력 전압8')
         INV9 = Column(Integer, comment='입력 전압9')
         INV10 = Column(Integer, comment='입력 전압10')
-        INV11 = Column(Integer, comment='입력 전압11')
-        INV12 = Column(Integer, comment='입력 전압12')
-        INV13 = Column(Integer, comment='입력 전압13')
-        INV14 = Column(Integer, comment='입력 전압14')
-        INV15 = Column(Integer, comment='입력 전압15')
-        INV16 = Column(Integer, comment='입력 전압16')
-        INV17 = Column(Integer, comment='입력 전압17')
-        INV18 = Column(Integer, comment='입력 전압18')
-        INV19 = Column(Integer, comment='입력 전압19')
-        INV20 = Column(Integer, comment='입력 전압20')
+        # INV11 = Column(Integer, comment='입력 전압11')
+        # INV12 = Column(Integer, comment='입력 전압12')
+        # INV13 = Column(Integer, comment='입력 전압13')
+        # INV14 = Column(Integer, comment='입력 전압14')
+        # INV15 = Column(Integer, comment='입력 전압15')
+        # INV16 = Column(Integer, comment='입력 전압16')
+        # INV17 = Column(Integer, comment='입력 전압17')
+        # INV18 = Column(Integer, comment='입력 전압18')
+        # INV19 = Column(Integer, comment='입력 전압19')
+        # INV20 = Column(Integer, comment='입력 전압20')
         INA1 = Column(Integer, comment='입력 전류1')
         INA2 = Column(Integer, comment='입력 전류2')
         INA3 = Column(Integer, comment='입력 전류3')
@@ -119,16 +122,16 @@ def create_dynamic_model_class(table_name, base=Base):
         INA8 = Column(Integer, comment='입력 전류8')
         INA9 = Column(Integer, comment='입력 전류9')
         INA10 = Column(Integer, comment='입력 전류10')
-        INA11 = Column(Integer, comment='입력 전류11')
-        INA12 = Column(Integer, comment='입력 전류12')
-        INA13 = Column(Integer, comment='입력 전류13')
-        INA14 = Column(Integer, comment='입력 전류14')
-        INA15 = Column(Integer, comment='입력 전류15')
-        INA16 = Column(Integer, comment='입력 전류16')
-        INA17 = Column(Integer, comment='입력 전류17')
-        INA18 = Column(Integer, comment='입력 전류18')
-        INA19 = Column(Integer, comment='입력 전류19')
-        INA20 = Column(Integer, comment='입력 전류20')
+        # INA11 = Column(Integer, comment='입력 전류11')
+        # INA12 = Column(Integer, comment='입력 전류12')
+        # INA13 = Column(Integer, comment='입력 전류13')
+        # INA14 = Column(Integer, comment='입력 전류14')
+        # INA15 = Column(Integer, comment='입력 전류15')
+        # INA16 = Column(Integer, comment='입력 전류16')
+        # INA17 = Column(Integer, comment='입력 전류17')
+        # INA18 = Column(Integer, comment='입력 전류18')
+        # INA19 = Column(Integer, comment='입력 전류19')
+        # INA20 = Column(Integer, comment='입력 전류20')
         INP = Column(Integer, comment='입력 전력')
         OUTV = Column(Integer, comment='단상 출력 전압')
         OUTA = Column(Integer, comment='단상 출력 전류')
@@ -148,17 +151,17 @@ def create_dynamic_model_class(table_name, base=Base):
         INVERRCD = Column(Integer, comment='인버터 에러코드')
         ONHOUR = Column(Integer, comment='연속 동작 시간')
         IVTFIRMVER = Column(Integer, comment='인버터 펌웨어 버전')
-        STATUS01 = Column(Integer, comment='상태코드1')
-        STATUS02 = Column(Integer, comment='상태코드2')
-        STATUS03 = Column(Integer, comment='상태코드3')
-        STATUS04 = Column(Integer, comment='상태코드4')
-        STATUS05 = Column(Integer, comment='상태코드5')
-        STATUS06 = Column(Integer, comment='상태코드6')
-        STATUS07 = Column(Integer, comment='상태코드7')
-        STATUS08 = Column(Integer, comment='상태코드8')
-        STATUS09 = Column(Integer, comment='상태코드9')
-        STATUS10 = Column(Integer, comment='상태코드10')
-        STATUS11 = Column(Integer, comment='상태코드11')
+        # STATUS01 = Column(Integer, comment='상태코드1')
+        # STATUS02 = Column(Integer, comment='상태코드2')
+        # STATUS03 = Column(Integer, comment='상태코드3')
+        # STATUS04 = Column(Integer, comment='상태코드4')
+        # STATUS05 = Column(Integer, comment='상태코드5')
+        # STATUS06 = Column(Integer, comment='상태코드6')
+        # STATUS07 = Column(Integer, comment='상태코드7')
+        # STATUS08 = Column(Integer, comment='상태코드8')
+        # STATUS09 = Column(Integer, comment='상태코드9')
+        # STATUS10 = Column(Integer, comment='상태코드10')
+        # STATUS11 = Column(Integer, comment='상태코드11')
         EVTDATE = Column(VARCHAR(10), comment='날짜')
         VERSION = Column(Integer, comment='버전')
         USETYPE = Column(VARCHAR(1), default='Y', comment='사용구분')

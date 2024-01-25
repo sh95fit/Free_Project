@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from decimal import Decimal
 from typing import Optional
 from datetime import datetime
 
@@ -86,16 +85,16 @@ class LawData(BaseModel):
     INV8: Optional[float] = None
     INV9: Optional[float] = None
     INV10: Optional[float] = None
-    INV11: Optional[float] = None
-    INV12: Optional[float] = None
-    INV13: Optional[float] = None
-    INV14: Optional[float] = None
-    INV15: Optional[float] = None
-    INV16: Optional[float] = None
-    INV17: Optional[float] = None
-    INV18: Optional[float] = None
-    INV19: Optional[float] = None
-    INV20: Optional[float] = None
+    # INV11: Optional[float] = None
+    # INV12: Optional[float] = None
+    # INV13: Optional[float] = None
+    # INV14: Optional[float] = None
+    # INV15: Optional[float] = None
+    # INV16: Optional[float] = None
+    # INV17: Optional[float] = None
+    # INV18: Optional[float] = None
+    # INV19: Optional[float] = None
+    # INV20: Optional[float] = None
     INA1: Optional[float] = None
     INA2: Optional[float] = None
     INA3: Optional[float] = None
@@ -106,16 +105,16 @@ class LawData(BaseModel):
     INA8: Optional[float] = None
     INA9: Optional[float] = None
     INA10: Optional[float] = None
-    INA11: Optional[float] = None
-    INA12: Optional[float] = None
-    INA13: Optional[float] = None
-    INA14: Optional[float] = None
-    INA15: Optional[float] = None
-    INA16: Optional[float] = None
-    INA17: Optional[float] = None
-    INA18: Optional[float] = None
-    INA19: Optional[float] = None
-    INA20: Optional[float] = None
+    # INA11: Optional[float] = None
+    # INA12: Optional[float] = None
+    # INA13: Optional[float] = None
+    # INA14: Optional[float] = None
+    # INA15: Optional[float] = None
+    # INA16: Optional[float] = None
+    # INA17: Optional[float] = None
+    # INA18: Optional[float] = None
+    # INA19: Optional[float] = None
+    # INA20: Optional[float] = None
     INP: Optional[float] = None
     OUTV: Optional[float] = None
     OUTA: Optional[float] = None
@@ -135,17 +134,17 @@ class LawData(BaseModel):
     INVERRCD: Optional[int] = None
     ONHOUR: Optional[int] = None
     IVTFIRMVER: Optional[int] = None
-    STATUS01: Optional[int] = None
-    STATUS02: Optional[int] = None
-    STATUS03: Optional[int] = None
-    STATUS04: Optional[int] = None
-    STATUS05: Optional[int] = None
-    STATUS06: Optional[int] = None
-    STATUS07: Optional[int] = None
-    STATUS08: Optional[int] = None
-    STATUS09: Optional[int] = None
-    STATUS10: Optional[int] = None
-    STATUS11: Optional[int] = None
+    # STATUS01: Optional[int] = None
+    # STATUS02: Optional[int] = None
+    # STATUS03: Optional[int] = None
+    # STATUS04: Optional[int] = None
+    # STATUS05: Optional[int] = None
+    # STATUS06: Optional[int] = None
+    # STATUS07: Optional[int] = None
+    # STATUS08: Optional[int] = None
+    # STATUS09: Optional[int] = None
+    # STATUS10: Optional[int] = None
+    # STATUS11: Optional[int] = None
     EVTDATE: Optional[str] = None
     VERSION: Optional[int] = None
     USETYPE: Optional[str] = 'Y'
