@@ -32,7 +32,7 @@ def get_raw_data(db: Session, modem_type: int, ivt_list: List[str], start_date: 
                 modem_type, start_date, datetime.now().strftime('%Y-%m-%d'))
 
         # 방법1. batch 사이즈로 일정 크기만큼씩 리스트에 저장
-        batch_size = 500
+        batch_size = 100
         for table in table_list:
             dynamic_model_class = create_dynamic_model_class(table)
             # dynamic_model_class = text(table)
@@ -49,6 +49,8 @@ def get_raw_data(db: Session, modem_type: int, ivt_list: List[str], start_date: 
 
                 result_list.extend(batch_result)
                 offset += batch_size
+            db.close()
+            db.expunge_all()    # SQLAlchemy의 세션에서 객체를 분리하여 메모리 해제
 
         return result_list
 
@@ -102,7 +104,7 @@ def get_raw_data(db: Session, modem_type: int, ivt_list: List[str], start_date: 
         # return result_list
 
         # 방법1. batch 사이즈로 일정 크기만큼씩 리스트에 저장
-        batch_size = 500
+        batch_size = 100
         for table in table_list:
             dynamic_model_class = create_dynamic_model_class(table)
 
@@ -119,6 +121,8 @@ def get_raw_data(db: Session, modem_type: int, ivt_list: List[str], start_date: 
 
                 result_list.extend(batch_result)
                 offset += batch_size
+            db.close()
+            db.expunge_all()
 
         return result_list
 
