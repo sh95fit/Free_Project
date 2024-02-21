@@ -3,17 +3,26 @@ import './ChartDisplay.css'
 
 import axios from "axios";
 
-import DailyChart from '../components/DailyChart'
+//import DailyChart from '../components/DailyChart'
+import HourlyChart from '../components/HourlyChart'
 import ErrorBoundary from '../components/ErrorBoundary'
 import Navbar from '../components/Navbar'
 
 export default function ChartDisplay() {
-  const [dailyData, setData] = useState([]);
+  const [solarData, setData] = useState([]);
 
-  const fetchData = async ({ untid, ivtid, startDate, endDate }) => {
+  const fetchData = async ({ untId, ivtList, startDate, endDate }) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/more/daily/${untid}/${ivtid}?start_date=${startDate}&end_date=${endDate}`
+      // const response = await axios.get(
+        // `http://localhost:8000/more/daily/${untid}/${ivtid}?start_date=${startDate}&end_date=${endDate}`
+      const response = await axios.post(
+        "http://localhost:8000/more/hour/post",
+        {
+          "UNTID": untId,
+          "IVTID": ivtList,
+          "start_date": startDate,
+          "end_date": endDate,
+        }
       );
 
       setData(response.data);
@@ -27,10 +36,10 @@ export default function ChartDisplay() {
       <Navbar onSubmit={fetchData} />
       <ErrorBoundary>
         <div className="container">
-          <DailyChart className="chart" data={dailyData} />
-          <DailyChart className="chart" data={dailyData} />
-          <DailyChart className="chart" data={dailyData} />
-          <DailyChart className="chart" data={dailyData} />
+          <HourlyChart className="chart" data={solarData} />
+          <HourlyChart className="chart" data={solarData} />
+          <HourlyChart className="chart" data={solarData} />
+          <HourlyChart className="chart" data={solarData} />
         </div>
       </ErrorBoundary>
     </div>

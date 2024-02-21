@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import './Form.css';
 
 const Form = ({ onSubmit }) => {
-  const [untid, setUntid] = useState("");
-  const [ivtid, setIvtid] = useState("");
+  const [untId, setUntid] = useState("");
+  const [ivtList, setIvtList] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -20,18 +20,20 @@ const Form = ({ onSubmit }) => {
     const formattedStartDate = formatDate(startDate);
     const formattedEndDate = formatDate(endDate);
 
-    onSubmit({ untid, ivtid, startDate: formattedStartDate, endDate: formattedEndDate });
+    const ivtListArray = ivtList.split(',').map(item => item.trim());
+
+    onSubmit({ untId, ivtList: ivtListArray, startDate: formattedStartDate, endDate: formattedEndDate });
   };
 
   return (
     <form className="form-container" onSubmit={handleSubmit}>
       <label className="form-row">
         UNTID :
-        <input type="text" value={untid} onChange={(e) => setUntid(e.target.value)} />
+        <input type="text" value={untId} onChange={(e) => setUntid(e.target.value)} />
       </label>
       <label className="form-row">
         IVTID :
-        <input type="text" value={ivtid} onChange={(e) => setIvtid(e.target.value)} />
+        <input type="text" value={ivtList} onChange={(e) => setIvtList(e.target.value)} />
       </label>
       <label className="form-row">
         Start Date :

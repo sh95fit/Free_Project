@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 
@@ -30,6 +30,13 @@ class HourData(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class SolarHourData(BaseModel):
+    UNTID: str
+    IVTID: List[str]
+    start_date: str
+    end_date: str
 
 
 class UntInfo(BaseModel):
