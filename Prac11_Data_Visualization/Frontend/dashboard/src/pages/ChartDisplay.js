@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import './ChartDisplay.css'
+
 import axios from "axios";
 
-import Chart from '../components/Chart'
+import DailyChart from '../components/DailyChart'
 import ErrorBoundary from '../components/ErrorBoundary'
-import Form from '../components/Form'
+import Navbar from '../components/Navbar'
 
 export default function ChartDisplay() {
-  const [data, setData] = useState([]);
+  const [dailyData, setData] = useState([]);
 
   const fetchData = async ({ untid, ivtid, startDate, endDate }) => {
     try {
@@ -22,9 +24,14 @@ export default function ChartDisplay() {
 
   return (
     <div>
-      <Form onSubmit={fetchData} />
+      <Navbar onSubmit={fetchData} />
       <ErrorBoundary>
-        <Chart data={data} />
+        <div className="container">
+          <DailyChart className="chart" data={dailyData} />
+          <DailyChart className="chart" data={dailyData} />
+          <DailyChart className="chart" data={dailyData} />
+          <DailyChart className="chart" data={dailyData} />
+        </div>
       </ErrorBoundary>
     </div>
   )

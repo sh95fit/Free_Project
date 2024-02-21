@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+  overflow: hidden; /* 바디 전체 스크롤을 숨김 */
+}
+
+.container {
+  display: grid;
+  grid-template-rows: auto auto; /* 각 행의 높이를 자동으로 설정 */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.chart {
+  width: 100%;
+  height: 100%;
+}

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import './Form.css';
+
 const Form = ({ onSubmit }) => {
   const [untid, setUntid] = useState("");
   const [ivtid, setIvtid] = useState("");
@@ -22,24 +24,24 @@ const Form = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        UNTID:
+    <form className="form-container" onSubmit={handleSubmit}>
+      <label className="form-row">
+        UNTID :
         <input type="text" value={untid} onChange={(e) => setUntid(e.target.value)} />
       </label>
-      <label>
-        IVTID:
+      <label className="form-row">
+        IVTID :
         <input type="text" value={ivtid} onChange={(e) => setIvtid(e.target.value)} />
       </label>
-      <label>
-        Start Date:
+      <label className="form-row">
+        Start Date :
         <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
       </label>
-      <label>
-        End Date:
+      <label className="form-row">
+        End Date :
         <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
       </label>
-      <button type="submit">Fetch Data</button>
+      <button className="form-data" type="submit">데이터 가져오기</button>
     </form>
   );
 };
