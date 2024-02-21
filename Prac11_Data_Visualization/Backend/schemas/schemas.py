@@ -18,6 +18,20 @@ class DailyData(BaseModel):
         from_attributes = True
 
 
+class HourData(BaseModel):
+    UNTID: str
+    IVTID: str
+    EVTDATE: str
+    EVTHH: str
+    TPG: float = 0.00
+    CPG: Optional[float] = None
+    GENTIME: Optional[float] = 0.00
+    UPDDATIME: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
 class UntInfo(BaseModel):
     UNTID: str
     UNTNM: str

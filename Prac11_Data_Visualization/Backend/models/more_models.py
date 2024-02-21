@@ -24,6 +24,23 @@ class daily_solar_data(Base):
         return {column.name: getattr(self, column.name) for column in self.__table__.columns}
 
 
+class hourly_solar_data(Base):
+    __tablename__ = "tb_slahourhis"
+
+    UNTID = Column(String(20), primary_key=True, comment='시공사ID')
+    IVTID = Column(String(20), primary_key=True, comment='INVERTERID')
+    EVTDATE = Column(String(10), primary_key=True, comment='날짜')
+    EVTHH = Column(String(2), primary_key=True, comment="시간")
+    TPG = Column(Float(precision=20), nullable=False,
+                 default=0.00, comment='당일 발전량')
+    CPG = Column(Float(precision=20), comment='누적 발전량')
+    GENTIME = Column(Float(precision=20), default=0.00, comment='발전시간')
+    UPDDATIME = Column(DateTime, default=func.now(), comment='업데이트시간')
+
+    def as_dict(self):
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+
+
 # 시공사 ID 가져오기
 class get_untmstinfo(Base):
     __tablename__ = 'tb_untmstinfo'
@@ -183,5 +200,6 @@ Base.metadata.reflect(bind=engine)
 
 
 daily_solar_data.__table__ = Base.metadata.tables['tb_sladayhis']
+hourly_solar_data.__table__ = Base.metadata.tables['tb_slahourhis']
 get_untmstinfo.__table__ = Base.metadata.tables['tb_untmstinfo']
 get_cstpwrmap.__table__ = Base.metadata.tables['tb_cstpwrmap']
