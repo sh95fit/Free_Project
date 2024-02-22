@@ -32,9 +32,12 @@ const MixedChart = ({ data }) => {
 
   // 날짜와 시간대를 기준으로 정렬하는 함수
   const sortByDateTime = (a, b) => {
-    const dateTimeA = parseInt(a.EVTDATE + a.EVTHH);
-    const dateTimeB = parseInt(b.EVTDATE + b.EVTHH);
-    return dateTimeA - dateTimeB;
+    // const dateTimeA = new Date(`${a.EVTDATE}T${a.EVTHH}`);
+    // const dateTimeB = new Date(`${b.EVTDATE}T${b.EVTHH}`);
+    // return dateTimeA - dateTimeB;
+    const dateTimeA = new Date(`${a.EVTDATE}T${a.EVTHH}`).getTime();
+    const dateTimeB = new Date(`${b.EVTDATE}T${b.EVTHH}`).getTime();
+    return dateTimeA - dateTimeB || parseInt(a.EVTHH, 10) - parseInt(b.EVTHH, 10);
   };
 
   const sortedData = data.slice().sort(sortByDateTime);
@@ -94,7 +97,7 @@ const MixedChart = ({ data }) => {
         data: dataWithZeros.map((entry) => entry.TPG),
         borderColor: randomColor,
         backgroundColor: randomColor,
-        borderWidth: 2,
+        borderWidth: 1,
         fill: false,
       };
     });
