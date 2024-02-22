@@ -29,55 +29,50 @@ ChartJS.register(
 
 
 const MixedChart = ({ data, ivtList }) => {
-  // 날짜를 기준으로 정렬하는 함수
-  const sortByDate = (a, b) => {
-    const dateA = new Date(a.UPDDATIME);
-    const dateB = new Date(b.UPDDATIME);
-    return dateA - dateB;
+
+  // 날짜와 시간대를 기준으로 정렬하는 함수
+  const sortByDateTime = (a, b) => {
+    const dateTimeA = parseInt(a.EVTDATE + a.EVTHH);
+    const dateTimeB = parseInt(b.EVTDATE + b.EVTHH);
+    return dateTimeA - dateTimeB;
   };
 
-  // 기존 데이터를 날짜순으로 정렬
-  const sortedData = data.slice().sort(sortByDate);
 
-  // 동적으로 선 그래프 데이터셋 생성
-  const generateLineDatasets = (data, ivtList) => {
-    return ivtList.flatMap((ivt, index) => {
-      return [
-        {
-          type: "line",
-          label: `${ivt}'s TPG`,
-          data: data.map((entry) => entry[`${ivt}_TPG`]),
-          backgroundColor: `rgba(75, 192, 192, 0.2)`,
-          borderColor: `rgba(75, 192, 192, 1)`,
-          borderWidth: 1,
-        },
-      ];
-    });
+
+  // 날짜와 시간대를 기준으로 데이터 합산 및 정렬하는 함수
+  const reduceAndSortDataByDateTime = (data) => {
+    const sortedData = data.slice().sort(sortByDateTime);
+
+    return sortedData.reduce((acc, entry) => {
+      const key = entry.EVTDATE + " " + entry.EVTHH;
+
+      if (!acc[key]) {
+        acc[key] = { ...entry };
+      } else {
+        // 여기에서 TPG를 합산하거나 다른 로직을 수행할 수 있습니다.
+        acc[key].TPG += entry.TPG;
+      }
+
+      return acc;
+    }, {});
   };
+
+  // 중복된 항목을 제거하고 합산된 데이터를 가져옴
+  const reducedData = Object.values(reduceAndSortDataByDateTime(data));
 
 
   // 차트에 사용할 데이터 포맷
   const chartData = {
-    labels: data.map((entry) => entry.UPDDATIME),
+    labels: reducedData.map((entry) => entry.EVTDATE + " " + entry.EVTHH),
     datasets: [
-      // {
-      //   type: "line",
-      //   label: "IVT1",
-      //   data: data.map((entry) => entry.TPG),
-      //   backgroundColor: "rgba(75,192,192,0.2)",
-      //   borderColor: "rgba(75,192,192,1)",
-      //   borderWidth: 1,
-      // },
       {
         type: "bar",
         label: "Total",
-        data: sortedData.map((entry) => entry.TPG),
+        data: reducedData.map((entry) => entry.TPG),
         backgroundColor: "#ddd",
         borderColor: "#ddd",
         borderWidth: 2,
       },
-
-      ...(Array.isArray(ivtList) ? generateLineDatasets(data, ivtList) : []),
     ],
   };
 
@@ -89,7 +84,7 @@ const MixedChart = ({ data, ivtList }) => {
         },
       title:{
           display: true,
-          text: "Daily Inverter Chart"
+          text: "Hourly Inverter Chart",
         },
     },
   };
@@ -101,6 +96,9 @@ const MixedChart = ({ data, ivtList }) => {
   );
 };
 
-
-
 export default MixedChart;
+
+
+
+
+
