@@ -39,7 +39,7 @@ def read_solar_hour_history(untid: str, ivt_list: List[str], start_date: str = Q
     return convert_to_dict(HourData, solar_hour_history)
 
 
-@router.post("/hour/post", response_model=List[HourData])
+@router.post("/hourly/post", response_model=List[HourData])
 def read_solar_hour_history(data: SolarHourData, db: Session = Depends(more_db)):
     untid = data.UNTID
     ivt_list = data.IVTID

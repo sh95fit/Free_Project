@@ -18,6 +18,13 @@ class DailyData(BaseModel):
         from_attributes = True
 
 
+class SolarDailyData(BaseModel):
+    UNTID: str
+    IVTID: List[str]
+    start_date: str
+    end_date: str
+
+
 class HourData(BaseModel):
     UNTID: str
     IVTID: str

@@ -16,7 +16,7 @@ export default function ChartDisplay() {
       // const response = await axios.get(
         // `http://localhost:8000/more/daily/${untid}/${ivtid}?start_date=${startDate}&end_date=${endDate}`
       const response = await axios.post(
-        "http://localhost:8000/more/hour/post",
+        "http://localhost:8000/more/hourly/post",
         {
           "UNTID": untId,
           "IVTID": ivtList,
