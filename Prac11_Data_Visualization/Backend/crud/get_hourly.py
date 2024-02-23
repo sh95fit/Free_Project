@@ -32,7 +32,9 @@ def get_solar_hourly_history(db: Session, untid: str, pwrid: str, start_date: st
         .join(pwrrtu, rtumod.RTUID == pwrrtu.RTUID)
         .filter(
             (pwrrtu.PWRID == pwrid) &
-            (modivt.UNTID == untid)
+            (modivt.UNTID == untid),
+            cast(hourly_table.EVTDATE, Integer) >= int(start_date),
+            cast(hourly_table.EVTDATE, Integer) <= int(end_date)
         )
         .all()
     )

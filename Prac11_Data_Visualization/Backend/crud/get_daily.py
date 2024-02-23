@@ -81,7 +81,9 @@ def get_solar_daily_data(db: Session, untid: str, pwrid: str, start_date: str, e
         .join(pwrrtu, rtumod.RTUID == pwrrtu.RTUID)
         .filter(
             (pwrrtu.PWRID == pwrid) &
-            (modivt.UNTID == untid)
+            (modivt.UNTID == untid),
+            cast(daily_table.EVTDATE, Integer) >= int(start_date),
+            cast(daily_table.EVTDATE, Integer) <= int(end_date)
         )
         .all()
     )
