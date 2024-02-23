@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: row;
   gap: 10px; /* 각 행 간의 간격, 필요에 따라 조정하세요 */
+  margin-left: 20px;
 }
 
 .form-row {
@@ -15,7 +16,7 @@ label {
 }
 
 input {
-  margin-right : 30px;
+  margin-right : 15px;
   padding: 6px 15px;
   border: none;
   border-radius: 5px;

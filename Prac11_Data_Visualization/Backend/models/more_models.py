@@ -3,9 +3,8 @@ from sqlalchemy.orm import declarative_base
 from database.session.more_db import engine, Base, Session
 from pydantic import BaseModel
 
-# get_daily 데이터
 
-
+# 일별 발전 데이터 가져오기
 class daily_solar_data(Base):
     __tablename__ = "tb_sladayhis"
 
@@ -24,6 +23,7 @@ class daily_solar_data(Base):
         return {column.name: getattr(self, column.name) for column in self.__table__.columns}
 
 
+# 시간대별 발전 데이터 가져오기
 class hourly_solar_data(Base):
     __tablename__ = "tb_slahourhis"
 
@@ -94,7 +94,43 @@ class get_cstpwrmap(Base):
         return {column.name: getattr(self, column.name) for column in self.__table__.columns}
 
 
+# PWR과 RTU 관계 테이블 가져오기
+class get_pwrrtuinfo(Base):
+    __tablename__ = 'tb_pwrrtuinfo'
+    UNTID = Column(VARCHAR(20), comment='시공사 ID', primary_key=True)
+    PWRID = Column(VARCHAR(20), comment='발전소 ID', primary_key=True)
+    RTUID = Column(VARCHAR(20), comment='RTU ID', primary_key=True)
+
+    def as_dict(self):
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+
+
+# RTU와 MODEM 관계 테이블 가져오기
+class get_rtumodmap(Base):
+    __tablename__ = "tb_rtumodmap"
+    UNTID = Column(VARCHAR(20), comment='시공사 ID', primary_key=True)
+    RTUID = Column(VARCHAR(20), comment='RTU ID', primary_key=True)
+    MODEMID = Column(VARCHAR(20), comment="MODEM ID", primary_key=True)
+    MODTYPE = Column(Integer, comment="모뎀 구분(0:LTE, 1:Lora, 2:TCP, 3:GSREMS)")
+
+    def as_dict(self):
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+
+
+# MODEM과 인버터 관계 테이블 가져오기
+class get_modivtmap(Base):
+    __tablename__ = "tb_modivtmap"
+    UNTID = Column(VARCHAR(20), comment='시공사 ID', primary_key=True)
+    MODEMID = Column(VARCHAR(20), comment="MODEM ID", primary_key=True)
+    IVTID = Column(VARCHAR(20), comment="인버터 ID", primary_key=True)
+    MODTYPE = Column(Integer, comment="모뎀 구분(0:LTE, 1:Lora, 2:TCP, 3:GSREMS)")
+
+    def as_dict(self):
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+
 # 인버터별 발전량 데이터 받아오기
+
+
 def create_dynamic_model_class(table_name):
     # 모델의 충돌을 방지 (class_registry를 빈 딕셔너리로 지정하여 비움으로써 새로운 세션에서 중복을 방지)
     DynamicBase = declarative_base(class_registry=dict())

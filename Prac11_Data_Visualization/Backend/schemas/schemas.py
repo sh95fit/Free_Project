@@ -25,6 +25,13 @@ class SolarDailyData(BaseModel):
     end_date: str
 
 
+class SolarDayData(BaseModel):
+    UNTID: str
+    PWRID: str
+    start_date: str
+    end_date: str
+
+
 class HourData(BaseModel):
     UNTID: str
     IVTID: str
@@ -42,6 +49,13 @@ class HourData(BaseModel):
 class SolarHourData(BaseModel):
     UNTID: str
     IVTID: List[str]
+    start_date: str
+    end_date: str
+
+
+class SolarHourlyData(BaseModel):
+    UNTID: str
+    PWRID: str
     start_date: str
     end_date: str
 
@@ -93,6 +107,32 @@ class CstInfo(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class PwrRtuInfo(BaseModel):
+    UNTID: str
+    PWRID: str
+    RTUID: str
+
+    class Config:
+        from_attributes = True
+
+
+class RtuModInfo(BaseModel):
+    UNTID: str
+    RTUID: str
+    MODEMID: str
+    MODEMTYPE: int
+
+    class Config:
+        from_attributes = True
+
+
+class ModIvtInfo(BaseModel):
+    UNTID: str
+    MODEMID: str
+    IVTID: str
+    MODETYPE: int
 
 
 class LawData(BaseModel):
