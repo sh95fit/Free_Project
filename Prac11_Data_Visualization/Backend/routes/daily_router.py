@@ -66,11 +66,11 @@ def read_daily_solar_data(data: SolarDayData, db: Session = Depends(more_db)):
         raise HTTPException(
             status_code=404, detail="Invaild date range. Start date should be less than or equal to end date.")
 
-    solar_hour_history = get_solar_daily_data(
+    solar_daily_data = get_solar_daily_data(
         db, untid, pwrid, start_date, end_date)
 
-    if solar_hour_history is None:
+    if solar_daily_data is None:
         raise HTTPException(
             status_code=404, detail="Solar Day History not found")
 
-    return convert_to_dict(DailyData, solar_hour_history)
+    return convert_to_dict(DailyData, solar_daily_data)

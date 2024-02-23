@@ -4,7 +4,7 @@ import './Form.css';
 
 const Form = ({ onSubmit }) => {
   const [untId, setUntid] = useState("");
-  const [pwdId, setPwdId] = useState("");
+  const [pwrId, setPwrId] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -22,7 +22,7 @@ const Form = ({ onSubmit }) => {
 
     // const ivtListArray = ivtList.split(',').map(item => item.trim());
 
-    onSubmit({ untId, pwdId, startDate: formattedStartDate, endDate: formattedEndDate });
+    onSubmit({ untId, pwrId, startDate: formattedStartDate, endDate: formattedEndDate });
   };
 
   return (
@@ -32,8 +32,8 @@ const Form = ({ onSubmit }) => {
         <input type="text" value={untId} onChange={(e) => setUntid(e.target.value)} />
       </label>
       <label className="form-row">
-        PWDID :
-        <input type="text" value={pwdId} onChange={(e) => setPwdId(e.target.value)} />
+        PWRID :
+        <input type="text" value={pwrId} onChange={(e) => setPwrId(e.target.value)} />
       </label>
       <label className="form-row">
         Start Date :

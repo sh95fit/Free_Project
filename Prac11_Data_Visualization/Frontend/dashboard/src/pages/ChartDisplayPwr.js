@@ -6,13 +6,13 @@ import axios from "axios";
 import DailyChart from '../components/DailyChart'
 import HourlyChart from '../components/HourlyChart'
 import ErrorBoundary from '../components/ErrorBoundary'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/NavbarPwr'
 
 export default function ChartDisplay() {
   const [solarHourlyData, setHourlyData] = useState([]);
   const [solarDailyData, setDailyData] = useState([]);
 
-  const HourlyData = async ({ untId, pwdId, startDate, endDate, dataSetter }) => {
+  const HourlyData = async ({ untId, pwrId, startDate, endDate, dataSetter }) => {
     try {
       // const response = await axios.get(
         // `http://localhost:8000/more/daily/${untid}/${ivtid}?start_date=${startDate}&end_date=${endDate}`
@@ -20,7 +20,7 @@ export default function ChartDisplay() {
         "http://localhost:8000/more/hourly",
         {
           "UNTID": untId,
-          "PWDID": pwdId,
+          "PWRID": pwrId,
           "start_date": startDate,
           "end_date": endDate,
         }
@@ -32,7 +32,7 @@ export default function ChartDisplay() {
     }
   };
 
-  const DailyData = async ({ untId, pwdId, startDate, endDate, dataSetter }) => {
+  const DailyData = async ({ untId, pwrId, startDate, endDate, dataSetter }) => {
     try {
       // const response = await axios.get(
         // `http://localhost:8000/more/daily/${untid}/${ivtid}?start_date=${startDate}&end_date=${endDate}`
@@ -40,7 +40,7 @@ export default function ChartDisplay() {
         "http://localhost:8000/more/daily",
         {
           "UNTID": untId,
-          "PWDID": pwdId,
+          "PWRID": pwrId,
           "start_date": startDate,
           "end_date": endDate,
         }
@@ -52,11 +52,11 @@ export default function ChartDisplay() {
     }
   };
 
-  const handleFormSubmit = async ({ untId, pwdId, startDate, endDate }) => {
+  const handleFormSubmit = async ({ untId, pwrId, startDate, endDate }) => {
     // fetchData 함수를 이용하여 HourlyData와 DailyData를 동시에 호출
     await HourlyData({
       untId,
-      pwdId,
+      pwrId,
       startDate,
       endDate,
       dataSetter: setHourlyData,
@@ -64,7 +64,7 @@ export default function ChartDisplay() {
 
     await DailyData({
       untId,
-      pwdId,
+      pwrId,
       startDate,
       endDate,
       dataSetter: setDailyData,
