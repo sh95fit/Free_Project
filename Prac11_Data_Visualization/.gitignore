@@ -365,3 +365,7 @@ thumb
 sketch
 
 # End of https://www.toptal.com/developers/gitignore/api/python,flask,django,react
+
+
+./database/auth_alembic
+auth_alembic/
