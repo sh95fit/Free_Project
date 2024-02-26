@@ -9,5 +9,5 @@ class User(Auth_Base):
 
     id = Column(Integer, primary_key=True)
     username = Column(VARCHAR(10), unique=True, nullable=False)
-    password = Column(VARCHAR(10), nullable=False)
+    password = Column(VARCHAR(300), nullable=False)
     email = Column(VARCHAR(50), unique=True, nullable=False)
