@@ -16,11 +16,15 @@ def create_user(db: Session, user_create: UserCreate):
     db.add(db_user)
     db.commit()
 
+
 # 중복값 예외 처리
-
-
 def get_existing_user(db: Session, user_create: UserCreate):
     return db.query(User).filter(
         (User.username == user_create.username) |
         (User.email == user_create.email)
-    ).first
+    ).first()
+
+
+# 로그인 CRUD
+def get_user(db: Session, username: str):
+    return db.query(User).filter(User.username == username).first()
