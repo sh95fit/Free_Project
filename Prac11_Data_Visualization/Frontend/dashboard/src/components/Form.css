@@ -23,7 +23,7 @@ input {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-button {
+.bt-formData {
   margin-left: 20px;
   background-color: #150477; /* 배경 색상 */
   color: white; /* 텍스트 색상 */
@@ -38,5 +38,19 @@ button {
   /* 호버 시 스타일 변경 */
   &:hover {
     background-color: #3979f0;
+  }
+}
+
+.bt-logout {
+  margin-left: auto;
+  margin-right: 15px;
+  border: none;
+  background-color: transparent;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+
+  &:hover {
+    color: #c9ced6;
   }
 }

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 import './Form.css';
 
@@ -25,26 +26,35 @@ const Form = ({ onSubmit }) => {
     onSubmit({ untId, ivtList: ivtListArray, startDate: formattedStartDate, endDate: formattedEndDate });
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+
+    navigate('/');
+  }
+
   return (
-    <form className="form-container" onSubmit={handleSubmit}>
-      <label className="form-row">
-        UNTID :
-        <input type="text" value={untId} onChange={(e) => setUntid(e.target.value)} />
-      </label>
-      <label className="form-row">
-        IVTID :
-        <input type="text" value={ivtList} onChange={(e) => setIvtList(e.target.value)} />
-      </label>
-      <label className="form-row">
-        Start Date :
-        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-      </label>
-      <label className="form-row">
-        End Date :
-        <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-      </label>
-      <button className="form-data" type="submit">데이터 가져오기</button>
-    </form>
+    <>
+      <form className="form-container" onSubmit={handleSubmit}>
+        <label className="form-row">
+          UNTID :
+          <input type="text" value={untId} onChange={(e) => setUntid(e.target.value)} />
+        </label>
+        <label className="form-row">
+          PWRID :
+          <input type="text" value={pwrId} onChange={(e) => setPwrId(e.target.value)} />
+        </label>
+        <label className="form-row">
+          Start Date :
+          <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+        </label>
+        <label className="form-row">
+          End Date :
+          <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+        </label>
+        <button className="form-data" type="submit">데이터 가져오기</button>
+      </form>
+      <button className="bt-logout" onClick={handleLogout}>로그아웃</button>
+    </>
   );
 };
 
