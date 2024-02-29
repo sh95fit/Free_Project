@@ -13,22 +13,41 @@ import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 
+import axios from 'axios';
 
-export default function Loginin() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+export default function Login() {
+  const [loginUsername, setLoginUsername] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    if (username === 'admin' && password === '1234') {
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post("http://localhost:8000/auth/login", {
+          grant_type: "",
+          username: loginUsername,
+          password: loginPassword,
+          scope: "",
+          client_id: "",
+          client_secret: "",
+        },
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
+      );
+
+      // const { access_token, username } = response.data;
+      const { access_token } = response.data;
+      localStorage.setItem('accessToken', access_token);
       navigate('/chart');
-    } else {
+    } catch (error) {
+      console.error('Login failed', error);
       alert('로그인 실패');
     }
-  }
+  };
 
   return (
-
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
@@ -40,8 +59,8 @@ export default function Loginin() {
       >
         <Avatar sx={{m:1, bgcolor:'secondary.main'}}><LockOutlinedIcon /></Avatar>
         <Typography component="h1" variant="h5">Login</Typography>
-        <TextField label="ID" value={username} onChange={(e) => setUsername(e.target.value)} required fullWidth name="email" autoComplete='email' autoFocus margin="normal"/>
-        <TextField type="password" label="Password"  value={password} onChange={(e) => setPassword(e.target.value)}  required fullWidth name="password" autoComplete='current-password'/>
+        <TextField label="ID" value={loginUsername} onChange={(e) => setLoginUsername(e.target.value)} required fullWidth name="username" autoComplete='id' autoFocus margin="normal"/>
+        <TextField type="password" label="Password"  value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)}  required fullWidth name="password" autoComplete='current-password'/>
         <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me"/>
         <Button onClick={handleLogin} fullWidth variant="contained" sx={{mt:3, mb:2}}>Login</Button>
         <Grid container>
