@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
 import './Form.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPersonWalkingDashedLineArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 const Form = ({ onSubmit }) => {
   const [untId, setUntid] = useState("");
@@ -53,7 +55,7 @@ const Form = ({ onSubmit }) => {
         </label>
         <button className="form-data" type="submit">데이터 가져오기</button>
       </form>
-      <button className="bt-logout" onClick={handleLogout}>로그아웃</button>
+      <button className="bt-logout" onClick={handleLogout}><FontAwesomeIcon icon={faPersonWalkingDashedLineArrowRight} /></button>
     </>
   );
 };

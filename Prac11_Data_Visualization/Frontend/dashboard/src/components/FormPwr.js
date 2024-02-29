@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import './Form.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faPersonWalkingDashedLineArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 const Form = ({ onSubmit }) => {
   const [untId, setUntid] = useState("");
@@ -57,7 +57,7 @@ const Form = ({ onSubmit }) => {
         </label>
         <button className="bt-formData" type="submit">데이터 가져오기</button>
       </form>
-      <button className="bt-logout" onClick={handleLogout}><FontAwesomeIcon icon={faCircleXmark} /></button>
+      <button className="bt-logout" onClick={handleLogout} title="로그아웃"><FontAwesomeIcon icon={faPersonWalkingDashedLineArrowRight} /></button>
     </>
   );
 };
