@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import ChartDisplay from './pages/ChartDisplayPwr';
 import Login from './pages/LoginPage';
+import { jwtDecode } from 'jwt-decode';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const ProtectedChartDisplay = () => {
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) {
         // 토큰이 없으면 로그인 페이지로 이동
+        localStorage.removeItem('accessToken');
         navigate('/');
         return;
       }
@@ -42,11 +44,36 @@ const ProtectedChartDisplay = () => {
 
         if (!response.ok) {
           // 토큰이 유효하지 않으면 로그인 페이지로 이동
+          localStorage.removeItem('accessToken');
           navigate('/');
+          return;
         }
+
+        const result = await response.json();
+
+        if (!result.valid) {
+          // 토큰이 유효하지 않으면 로그인 페이지로 이동
+          localStorage.removeItem('accessToken');
+          navigate('/');
+          return;
+        }
+
+        // 토큰의 만료 시간 확인
+        const decodedToken = jwtDecode(accessToken);
+        const expirationTimeInSeconds = decodedToken.exp;
+        const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+
+        if (expirationTimeInSeconds < currentTimeInSeconds) {
+          // 토큰이 만료되었으면 로그인 페이지로 이동
+          localStorage.removeItem('accessToken');
+          navigate('/');
+          return;
+        }
+
       } catch (error) {
         console.error('토큰 검증 에러', error);
         // 검증 중 에러가 발생하면 로그인 페이지로 이동
+        localStorage.removeItem('accessToken');
         navigate('/');
       }
     };

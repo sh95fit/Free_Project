@@ -14,6 +14,7 @@ import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 export default function Login() {
   const [loginUsername, setLoginUsername] = useState('');
@@ -39,9 +40,29 @@ export default function Login() {
 
       // const { access_token, username } = response.data;
       const { access_token } = response.data;
-      localStorage.setItem('accessToken', access_token);
-      navigate('/chart');
-    } catch (error) {
+      // 토큰 디코딩하여 만료 시간 확인
+      const decodedToken = jwtDecode(access_token);
+
+      // 만료 시간 확인
+      const expirationTimeInSeconds = decodedToken.exp;
+      const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+
+      const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        navigate('/');
+      }
+
+      if (expirationTimeInSeconds < currentTimeInSeconds) {
+        // 토큰 만료
+        console.log("토큰이 만료되었습니다");
+        alert('로그인 실패');
+        handleLogout();
+      } else {
+        // 토큰이 유효함
+        localStorage.setItem('accessToken', access_token);
+        navigate('/chart');
+      }
+    } catch(error) {
       console.error('Login failed', error);
       alert('로그인 실패');
     }
