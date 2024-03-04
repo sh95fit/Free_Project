@@ -10,6 +10,7 @@ from database.auth_connection import auth_db
 from schemas.auth_schemas import UserCreate, Token
 from crud.auth_crud import create_user, get_existing_user, pwd_context, get_user
 
+from typing import Optional
 from starlette import status
 
 import os
@@ -123,6 +124,6 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 
 # 토큰 유효성 검증 API 엔드포인트
 @router.post("/validate-token")
-async def validate_token(current_user: str = Depends(get_current_user)):
+async def validate_token(current_user: Optional[str] = Depends(get_current_user)):
     # 토큰이 검증되었을 때 유효한 응답 반환
     return {"valid": True}
