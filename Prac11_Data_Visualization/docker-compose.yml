@@ -38,7 +38,26 @@ services:
       dash_net:
         aliases:
           - backend
+    external_links:
+      - DA_redis
+    depends_on:
+      - redis
     command: uvicorn main:app --host 0.0.0.0 --reload --port 8000
+
+  redis:
+    image: redis:latest
+    container_name: DA_redis
+    restart: always
+    hostname: redis
+    ports:
+      - 6379:6379
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - dash_net
 
 networks:
   dash_net:
