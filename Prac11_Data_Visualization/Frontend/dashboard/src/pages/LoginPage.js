@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import "./style.css"
+
+import "./LoginPage.css"
+import ModalForgotPw from './ModalForgotPw';
+
 import TextField from '@mui/material/TextField'
 import Checkbox from "@mui/material/Checkbox"
 import Button from '@mui/material/Button'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Typography from '@mui/material/Typography'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+// import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Link from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
 import Avatar from '@mui/material/Avatar'
@@ -20,6 +24,7 @@ export default function Login() {
   const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [modalPw, setModalPw] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -95,30 +100,50 @@ export default function Login() {
     }
   };
 
+  const handleOpenModalPw = () => {
+    setModalPw(true);
+  }
+
+  const handleCloseModalPw = () => {
+    setModalPw(false);
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: '100px',
+          top: '50%',
+          left: '50%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
         }}
       >
-        <Avatar sx={{m:1, bgcolor:'secondary.main'}}><LockOutlinedIcon /></Avatar>
-        <Typography component="h1" variant="h5">Login</Typography>
+        <Avatar sx={{m:1,
+          bgcolor:'white',
+          width: '100px',
+          height: '100px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <img src="./assets/favicon.png" alt="MORE" style={{ width: '80%', height: '80%' }} />
+        </Avatar>
+        <Typography component="h1" variant="h5" marginBottom={'20px'} fontWeight={'600'} fontSize={'24px'} style={{ textAlign: 'center'}}>Login</Typography>
         <TextField label="ID" value={loginUsername} onChange={(e) => setLoginUsername(e.target.value)} required fullWidth name="username" autoComplete='id' autoFocus margin="normal"/>
         <TextField id='password-input' type="password" label="Password"  value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)}  required fullWidth name="password" autoComplete='current-password'/>
         <FormControlLabel control={<Checkbox value="remember" color="primary" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />} label="Remember me"/>
         <Button onClick={handleLogin} fullWidth variant="contained" sx={{mt:3, mb:2}}>Login</Button>
         <Grid container>
           <Grid item xs>
-            <Link>
+            <Link onClick={handleOpenModalPw} className="login-option">
               Forgot password?
             </Link>
+            <ModalForgotPw open={modalPw} handleClose={handleCloseModalPw} />
           </Grid>
           <Grid item>
-            <Link>
+            <Link className="login-option">
               Sign Up
             </Link>
           </Grid>
