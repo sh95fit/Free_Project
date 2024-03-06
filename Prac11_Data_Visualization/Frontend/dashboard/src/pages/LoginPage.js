@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import "./style.css"
 import TextField from '@mui/material/TextField'
@@ -19,7 +19,24 @@ import { jwtDecode } from 'jwt-decode';
 export default function Login() {
   const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // 페이지 진입 시 localStorage에서 저장된 정보를 읽어와서 상태에 설정
+    const storedUsername = localStorage.getItem('rememberedUsername');
+    const storedRememberMe = localStorage.getItem('rememberMe') === 'true';
+
+    if (storedUsername) {
+      setLoginUsername(storedUsername);
+
+      if (storedRememberMe){
+        setRememberMe(storedRememberMe);
+
+        document.getElementById('password-input').focus();
+      }
+    }
+  }, []);
 
   const handleLogin = async () => {
     try {
@@ -37,6 +54,16 @@ export default function Login() {
           },
         }
       );
+
+      // 로그인 성공 시 rememberMe가 체크된 경우 localStorage에 아이디 저장
+      if (rememberMe){
+        localStorage.setItem('rememberedUsername', loginUsername);
+        localStorage.setItem('rememberMe', 'true');
+      } else {
+        // 체크되지 않은 경우 저장된 정보 삭제
+        localStorage.removeItem('rememberedUsername');
+        localStorage.removeItem('rememberMe');
+      }
 
       // const { access_token, username } = response.data;
       const { access_token } = response.data;
@@ -81,8 +108,8 @@ export default function Login() {
         <Avatar sx={{m:1, bgcolor:'secondary.main'}}><LockOutlinedIcon /></Avatar>
         <Typography component="h1" variant="h5">Login</Typography>
         <TextField label="ID" value={loginUsername} onChange={(e) => setLoginUsername(e.target.value)} required fullWidth name="username" autoComplete='id' autoFocus margin="normal"/>
-        <TextField type="password" label="Password"  value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)}  required fullWidth name="password" autoComplete='current-password'/>
-        <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me"/>
+        <TextField id='password-input' type="password" label="Password"  value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)}  required fullWidth name="password" autoComplete='current-password'/>
+        <FormControlLabel control={<Checkbox value="remember" color="primary" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />} label="Remember me"/>
         <Button onClick={handleLogin} fullWidth variant="contained" sx={{mt:3, mb:2}}>Login</Button>
         <Grid container>
           <Grid item xs>
