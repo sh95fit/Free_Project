@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField'
 import Checkbox from "@mui/material/Checkbox"
 import Button from '@mui/material/Button'
 import FormControlLabel from '@mui/material/FormControlLabel'
-import Typography from '@mui/material/Typography'
+// import Typography from '@mui/material/Typography'
 // import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Link from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
@@ -46,6 +46,12 @@ export default function Login() {
   }, []);
 
   const handleLogin = async () => {
+    const handleLogout = () => {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken')
+      navigate('/');
+    }
+
     try {
       const response = await axios.post("http://localhost:8000/auth/login", {
           grant_type: "",
@@ -72,8 +78,10 @@ export default function Login() {
         localStorage.removeItem('rememberMe');
       }
 
-      // const { access_token, username } = response.data;
-      const { access_token } = response.data;
+      // const { access_token, username, refresh_token } = response.data;
+      const { access_token, refresh_token } = response.data;
+
+
       // 토큰 디코딩하여 만료 시간 확인
       const decodedToken = jwtDecode(access_token);
 
@@ -81,21 +89,19 @@ export default function Login() {
       const expirationTimeInSeconds = decodedToken.exp;
       const currentTimeInSeconds = Math.floor(Date.now() / 1000);
 
-      const handleLogout = () => {
-        localStorage.removeItem('accessToken');
-        navigate('/');
+      if(expirationTimeInSeconds < currentTimeInSeconds) {
+          // 토큰 만료
+          console.log("토큰이 만료되었습니다");
+          alert('로그인 실패');
+          handleLogout();
+      } else {
+        // 토큰이 유효한 경우
+        localStorage.setItem('accessToken', access_token);
+        localStorage.setItem('refreshToken', refresh_token);
+
+        navigate('/chart')
       }
 
-      if (expirationTimeInSeconds < currentTimeInSeconds) {
-        // 토큰 만료
-        console.log("토큰이 만료되었습니다");
-        alert('로그인 실패');
-        handleLogout();
-      } else {
-        // 토큰이 유효함
-        localStorage.setItem('accessToken', access_token);
-        navigate('/chart');
-      }
     } catch(error) {
       console.error('Login failed', error);
       alert('로그인 실패');

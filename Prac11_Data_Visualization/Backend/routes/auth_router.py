@@ -185,6 +185,11 @@ async def refresh_access_token(refresh_token: str):
             data={"sub": username},
             expires_delta=access_token_expires
         )
-        return {"access_token": new_access_token, "token_type": "bearer", "username": username}
+        return {
+            "access_token": new_access_token,
+            "token_type": "bearer",
+            "username": username,
+            "refresh_token": refresh_token,
+        }
     else:
         raise credentials_exception

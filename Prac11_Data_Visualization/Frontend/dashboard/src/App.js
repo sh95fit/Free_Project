@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import ChartDisplay from './pages/ChartDisplayPwr';
 import Login from './pages/LoginPage';
 import { jwtDecode } from 'jwt-decode';
+
+import axios from 'axios';
 
 const App = () => {
   return (
@@ -22,64 +24,71 @@ const App = () => {
 const ProtectedChartDisplay = () => {
   const navigate = useNavigate();
 
+  const refreshAccessToken = useCallback(async (refreshToken) => {
+    try {
+      const refreshResponse = await axios.post(
+        'http://localhost:8000/auth/refresh-token',
+        { refresh_token: refreshToken },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (!refreshResponse.ok) {
+        throw new Error('리프레시 토큰 갱신 실패');
+      }
+
+      const refreshResult = await refreshResponse.json();
+
+      if (!refreshResult.access_token) {
+        throw new Error('엑세스 토큰 갱신 실패');
+      }
+
+      // 새로 받은 엑세스 토큰으로 로컬 스토리지 갱신
+      localStorage.setItem('accessToken', refreshResult.access_token);
+    } catch (error) {
+      console.error('토큰 갱신 에러', error);
+      throw error; // 갱신 중 에러가 발생하면 에러를 다시 던져서 처리
+    }
+  }, []);
+
   useEffect(() => {
     const checkTokenValidity = async () => {
       const accessToken = localStorage.getItem('accessToken');
-      if (!accessToken) {
-        // 토큰이 없으면 로그인 페이지로 이동
-        localStorage.removeItem('accessToken');
-        navigate('/');
-        return;
-      }
+      const refreshToken = localStorage.getItem('refreshToken');
 
       try {
-        const response = await fetch('http://localhost:8000/auth/validate-token', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify({ token: accessToken }),
-        });
-
-        if (!response.ok) {
-          // 토큰이 유효하지 않으면 로그인 페이지로 이동
-          localStorage.removeItem('accessToken');
-          navigate('/');
-          return;
-        }
-
-        const result = await response.json();
-
-        if (!result.valid) {
-          // 토큰이 유효하지 않으면 로그인 페이지로 이동
-          localStorage.removeItem('accessToken');
-          navigate('/');
-          return;
-        }
-
         // 토큰의 만료 시간 확인
         const decodedToken = jwtDecode(accessToken);
         const expirationTimeInSeconds = decodedToken.exp;
         const currentTimeInSeconds = Math.floor(Date.now() / 1000);
 
-        if (expirationTimeInSeconds < currentTimeInSeconds) {
-          // 토큰이 만료되었으면 로그인 페이지로 이동
-          localStorage.removeItem('accessToken');
-          navigate('/');
-          return;
+        if (expirationTimeInSeconds < currentTimeInSeconds && refreshToken) {
+          // 토큰이 만료되었으면 리프레시 토큰으로 엑세스 토큰 갱신
+          await refreshAccessToken(refreshToken);
+        } else {
+          // 토큰이 만료되지 않았거나 리프레시 토큰이 없으면 /chart 페이지로 이동
+          navigate('/chart');
         }
-
       } catch (error) {
         console.error('토큰 검증 에러', error);
         // 검증 중 에러가 발생하면 로그인 페이지로 이동
         localStorage.removeItem('accessToken');
         navigate('/');
       }
+
+      if (!accessToken) {
+        // 토큰이 없으면 로그인 페이지로 이동
+        localStorage.removeItem('accessToken');
+        navigate('/');
+        return;
+      }
     };
 
     checkTokenValidity();
-  }, [navigate]);
+  }, [navigate, refreshAccessToken]);
 
   return <ChartDisplay />;
 };
