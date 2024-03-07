@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import "./LoginPage.css"
 import ModalForgotPw from './ModalForgotPw';
+import ModalSignIn from './ModalSignIn';
 
 import TextField from '@mui/material/TextField'
 import Checkbox from "@mui/material/Checkbox"
@@ -25,6 +26,7 @@ export default function Login() {
   const [loginPassword, setLoginPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [modalPw, setModalPw] = useState(false);
+  const [modalSignIn, setModalSignIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -108,11 +110,19 @@ export default function Login() {
     setModalPw(false);
   }
 
+  const handleOpenModalSignIn = () => {
+    setModalSignIn(true);
+  }
+
+  const handleCloseModalSignIn = () => {
+    setModalSignIn(false);
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
-          marginTop: '100px',
+          marginTop: '30px',
           top: '50%',
           left: '50%',
           display: 'flex',
@@ -122,15 +132,16 @@ export default function Login() {
       >
         <Avatar sx={{m:1,
           bgcolor:'white',
-          width: '100px',
-          height: '100px',
+          width: '400px',
+          height: '400px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          marginBottom: '-50px',
         }}>
-          <img src="./assets/favicon.png" alt="MORE" style={{ width: '80%', height: '80%' }} />
+          <img src="./assets/logo.jpg" alt="MORE" style={{ width: '100%', height: '100%' }} />
         </Avatar>
-        <Typography component="h1" variant="h5" marginBottom={'20px'} fontWeight={'600'} fontSize={'24px'} style={{ textAlign: 'center'}}>Login</Typography>
+        {/* <Typography component="h1" variant="h5" marginBottom={'30px'} fontWeight={'600'} fontSize={'24px'} style={{ textAlign: 'center'}}>Login</Typography> */}
         <TextField label="ID" value={loginUsername} onChange={(e) => setLoginUsername(e.target.value)} required fullWidth name="username" autoComplete='id' autoFocus margin="normal"/>
         <TextField id='password-input' type="password" label="Password"  value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)}  required fullWidth name="password" autoComplete='current-password'/>
         <FormControlLabel control={<Checkbox value="remember" color="primary" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />} label="Remember me"/>
@@ -143,9 +154,10 @@ export default function Login() {
             <ModalForgotPw open={modalPw} handleClose={handleCloseModalPw} />
           </Grid>
           <Grid item>
-            <Link className="login-option">
+            <Link onClick={handleOpenModalSignIn} className="login-option">
               Sign Up
             </Link>
+            <ModalSignIn open={modalSignIn} handleClose={handleCloseModalSignIn} />
           </Grid>
         </Grid>
       </Box>
