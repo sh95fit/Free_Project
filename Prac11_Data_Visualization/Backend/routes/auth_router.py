@@ -16,10 +16,19 @@ from starlette import status
 import os
 from dotenv import load_dotenv
 
+import redis
+import secrets
+
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
+REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS"))
+
+REDIS_HOST = os.getenv("REDIS_HOST")
+REDIS_PORT = os.getenv("REDIS_PORT")
+redis_client = redis.StrictRedis(
+    host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
@@ -68,6 +77,12 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         expires_delta=access_token_expires
     )
 
+    # 리프레시 토큰 생성
+    refresh_token = create_refresh_token()
+
+    # 리프레시 토큰을 redis에 저장
+    store_refresh_token(username=user.username, refresh_token=refresh_token)
+
     if is_token_expired(access_token):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -78,7 +93,8 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     return {
         "access_token": access_token,
         "token_type": "bearer",
-        "username": user.username
+        "username": user.username,
+        "refresh_token": refresh_token,
     }
 
 
@@ -93,11 +109,13 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
     return encoded_jwt
 
 
-def is_token_expired(token: str):
+def is_token_expired(token: str, is_refresh_token: bool = False):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         expiration = datetime.utcfromtimestamp(payload["exp"])
-        return datetime.utcnow() > expiration
+        if is_refresh_token:
+            return datetime.utcnow() > expiration
+        return False
     except jwt.ExpiredSignatureError:
         return True
     except jwt.JWTError:
@@ -127,3 +145,46 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 async def validate_token(current_user: Optional[str] = Depends(get_current_user)):
     # 토큰이 검증되었을 때 유효한 응답 반환
     return {"valid": True}
+
+
+# Refresh Token 처리 관련
+
+# refresh token 저장
+def store_refresh_token(username: str, refresh_token: str):
+    redis_key = f"refresh_token:{username}"
+    refresh_token_expires = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    redis_client.setex(
+        redis_key, int(refresh_token_expires.total_seconds()), refresh_token)
+
+
+def create_refresh_token():
+    return secrets.token_urlsafe(32)
+
+
+def verify_refresh_token(refresh_token: str) -> Optional[str]:
+    # 리프레시 토큰 유효성 검사
+    username = redis_client.get(f"refresh_token:{refresh_token}")
+
+    return username if username else None
+
+
+@router.post("/refresh-token")
+async def refresh_access_token(refresh_token: str):
+    username = verify_refresh_token(refresh_token)
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="잘못된 리프레시 토큰",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    if username:
+        # 새로운 엑세스 토큰 생성
+        new_access_token = create_access_token(
+            data={"sub": username},
+            expires_delta=access_token_expires
+        )
+        return {"access_token": new_access_token, "token_type": "bearer", "username": username}
+    else:
+        raise credentials_exception
