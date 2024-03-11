@@ -33,14 +33,14 @@ const ProtectedChartDisplay = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
 
-      if (!refreshResponse.ok) {
+      if (refreshResponse.status !== 200) {
         throw new Error('리프레시 토큰 갱신 실패');
       }
 
-      const refreshResult = await refreshResponse.json();
+      const refreshResult = await refreshResponse.data;
 
       if (!refreshResult.access_token) {
         throw new Error('엑세스 토큰 갱신 실패');

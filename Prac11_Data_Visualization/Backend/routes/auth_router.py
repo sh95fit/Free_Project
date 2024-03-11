@@ -7,7 +7,7 @@ from jose import jwt, JWTError
 
 from sqlalchemy.orm import Session
 from database.auth_connection import auth_db
-from schemas.auth_schemas import UserCreate, Token
+from schemas.auth_schemas import UserCreate, Token, RefreshToken
 from crud.auth_crud import create_user, get_existing_user, pwd_context, get_user
 
 from typing import Optional
@@ -151,10 +151,14 @@ async def validate_token(current_user: Optional[str] = Depends(get_current_user)
 
 # refresh token 저장
 def store_refresh_token(username: str, refresh_token: str):
-    redis_key = f"refresh_token:{username}"
+    # redis_key = f"refresh_token:{username}"
+    # refresh_token_expires = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    # redis_client.setex(
+    #     redis_key, int(refresh_token_expires.total_seconds()), refresh_token)
+    redis_key = f"refresh_token:{refresh_token}"
     refresh_token_expires = timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
     redis_client.setex(
-        redis_key, int(refresh_token_expires.total_seconds()), refresh_token)
+        redis_key, int(refresh_token_expires.total_seconds()), username)
 
 
 def create_refresh_token():
@@ -169,7 +173,8 @@ def verify_refresh_token(refresh_token: str) -> Optional[str]:
 
 
 @router.post("/refresh-token")
-async def refresh_access_token(refresh_token: str):
+async def refresh_access_token(refresh_token: RefreshToken):
+    refresh_token = refresh_token.refresh_token
     username = verify_refresh_token(refresh_token)
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
 
