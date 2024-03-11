@@ -32,12 +32,20 @@ const MixedChart = ({ data }) => {
 
   // 날짜와 시간대를 기준으로 정렬하는 함수
   const sortByDateTime = (a, b) => {
-    // const dateTimeA = new Date(`${a.EVTDATE}T${a.EVTHH}`);
-    // const dateTimeB = new Date(`${b.EVTDATE}T${b.EVTHH}`);
-    // return dateTimeA - dateTimeB;
-    const dateTimeA = new Date(`${a.EVTDATE}T${a.EVTHH}`).getTime();
-    const dateTimeB = new Date(`${b.EVTDATE}T${b.EVTHH}`).getTime();
-    return dateTimeA - dateTimeB || parseInt(a.EVTHH, 10) - parseInt(b.EVTHH, 10);
+        // EVTDATE를 숫자로 변환하여 날짜별 정렬
+        const dateA = parseInt(a.EVTDATE, 10);
+        const dateB = parseInt(b.EVTDATE, 10);
+
+        // 날짜별 정렬 후 EVTHH를 숫자로 변환하여 시간별 정렬
+        if (dateA === dateB) {
+            const timeA = parseInt(a.EVTHH, 10);
+            const timeB = parseInt(b.EVTHH, 10);
+
+            return timeA - timeB;
+        }
+
+        return dateA - dateB;
+
   };
 
   const sortedData = data.slice().sort(sortByDateTime);
