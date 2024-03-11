@@ -30,6 +30,14 @@ export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
+
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken) {
+      navigate('/chart');
+      return;
+    }
+
     // 페이지 진입 시 localStorage에서 저장된 정보를 읽어와서 상태에 설정
     const storedUsername = localStorage.getItem('rememberedUsername');
     const storedRememberMe = localStorage.getItem('rememberMe') === 'true';
@@ -43,7 +51,7 @@ export default function Login() {
         document.getElementById('password-input').focus();
       }
     }
-  }, []);
+  }, [navigate]);
 
   const handleLogin = async () => {
     const handleLogout = () => {
