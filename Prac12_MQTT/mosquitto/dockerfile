@@ -1,0 +1,11 @@
+# 기본 이미지 설정
+FROM eclipse-mosquitto
+
+# 사용자 정의 설정 파일 복사
+COPY mosquitto.conf /mosquitto/config/mosquitto.conf
+
+# 포트 노출
+EXPOSE 1883 9001
+
+# 컨테이너 실행 시 실행할 명령
+CMD ["/usr/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]
