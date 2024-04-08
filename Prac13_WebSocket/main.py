@@ -105,18 +105,104 @@
 #     uvicorn.run(app, host="0.0.0.0", port=8000)
 
 
-# 일반적인 소켓 통신
+# =======================================================================================
+# # 일반적인 소켓 통신
+# import socket
+# from dotenv import dotenv_values, load_dotenv
+# import pymysql
+# import logging
 
+
+# load_dotenv()
+
+# config = dotenv_values(
+#     r"C:\Users\user\Desktop\KIMSEHUN\develop\Free_Project\Prac13_WebSocket\.env")
+
+# MYSQL_HOST = config['MYSQL_HOST']
+# MYSQL_PORT = int(config['MYSQL_PORT'])  # MySQL 포트는 정수형으로 변환해야 합니다.
+# MYSQL_USER = config['MYSQL_USER']
+# MYSQL_PASSWORD = config['MYSQL_PASSWORD']
+# MYSQL_DB = config['MYSQL_DB']
+
+# # 로깅 설정
+# logging.basicConfig(level=logging.INFO)
+# logger = logging.getLogger(__name__)
+
+# # TCP/IP 서버 설정
+# HOST = '0.0.0.0'  # 모든 IP에서 연결 허용
+# PORT = 10025  # 사용할 포트 번호
+
+
+# def save_to_database(ip, data):
+#     try:
+#         # MySQL 연결
+#         conn = pymysql.connect(host=MYSQL_HOST, port=MYSQL_PORT,
+#                                user=MYSQL_USER, password=MYSQL_PASSWORD, database=MYSQL_DB)
+#         cursor = conn.cursor()
+
+#         # 데이터 삽입 쿼리 실행
+#         sql = "INSERT INTO data (ip, data) VALUES (%s, %s)"
+#         cursor.execute(sql, (ip, data))
+
+#         # 변경사항 커밋
+#         conn.commit()
+
+#         # 연결 종료
+#         conn.close()
+#     except Exception as e:
+#         logger.error("Error saving to database: %s", e)
+
+
+# def main():
+#     # 소켓 생성
+#     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
+#         # 소켓 주소와 포트 바인딩
+#         server_socket.bind((HOST, PORT))
+
+#         # 연결 대기 상태로 전환
+#         server_socket.listen()
+
+#         logger.info("Server listening on port %d", PORT)
+
+#         while True:
+#             try:
+#                 # 클라이언트 연결 대기
+#                 client_socket, client_address = server_socket.accept()
+#                 logger.info("Connected by %s", client_address)
+
+#                 # 데이터 수신
+#                 data = client_socket.recv(1024)
+#                 if not data:
+#                     continue  # 데이터가 없으면 다음 루프로 넘어감
+
+#                 # IP 주소와 데이터 추출
+#                 ip = client_address[0]  # 처음 10바이트를 IP 주소로 간주
+#                 data = data.decode('utf-8')  # 나머지 데이터를 실제 데이터로 간주
+
+#                 save_to_database(ip, data)
+
+#                 logger.info("Data received from %s: %s", ip, data)
+
+#                 # 연결 종료
+#                 client_socket.close()
+
+#             except Exception as e:
+#                 logger.error("Error handling client data: %s", e)
+
+
+# if __name__ == "__main__":
+#     main()
+# =======================================================================================
+import asyncio
 import socket
 from dotenv import dotenv_values, load_dotenv
 import pymysql
 import logging
 
-
 load_dotenv()
 
 config = dotenv_values(
-    r"D:\Hun's\Hun's\sh95fit_git\Free_Project\Prac13_WebSocket\.env")
+    r"C:\Users\user\Desktop\KIMSEHUN\develop\Free_Project\Prac13_WebSocket\.env")
 
 MYSQL_HOST = config['MYSQL_HOST']
 MYSQL_PORT = int(config['MYSQL_PORT'])  # MySQL 포트는 정수형으로 변환해야 합니다.
@@ -132,61 +218,65 @@ logger = logging.getLogger(__name__)
 HOST = '0.0.0.0'  # 모든 IP에서 연결 허용
 PORT = 10025  # 사용할 포트 번호
 
+
 def save_to_database(ip, data):
     try:
         # MySQL 연결
-        conn = pymysql.connect(host=MYSQL_HOST, port=MYSQL_PORT, user=MYSQL_USER, password=MYSQL_PASSWORD, database=MYSQL_DB)
+        conn = pymysql.connect(host=MYSQL_HOST, port=MYSQL_PORT,
+                               user=MYSQL_USER, password=MYSQL_PASSWORD, database=MYSQL_DB)
         cursor = conn.cursor()
 
         # 데이터 삽입 쿼리 실행
         sql = "INSERT INTO data (ip, data) VALUES (%s, %s)"
         cursor.execute(sql, (ip, data))
-        
+
         # 변경사항 커밋
         conn.commit()
-        
+
         # 연결 종료
         conn.close()
     except Exception as e:
         logger.error("Error saving to database: %s", e)
 
-def main():
+
+async def handle_client(client_socket, client_address):
+    try:
+        logger.info("Connected by %s", client_address)
+
+        # 데이터 수신
+        data = await loop.sock_recv(client_socket, 1024)
+        if not data:
+            return  # 데이터가 없으면 종료
+
+        # IP 주소와 데이터 추출
+        ip = client_address[0]  # 클라이언트의 IP 주소
+        data = data.decode('utf-8')  # 받은 데이터를 UTF-8 형식으로 디코딩
+
+        save_to_database(ip, data)
+
+        logger.info("Data received from %s: %s", ip, data)
+
+    except Exception as e:
+        logger.error("Error handling client data: %s", e)
+
+    finally:
+        client_socket.close()
+
+
+async def main():
     # 소켓 생성
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
-        # 소켓 주소와 포트 바인딩
-        server_socket.bind((HOST, PORT))
-        
-        # 연결 대기 상태로 전환
-        server_socket.listen()
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server_socket.bind((HOST, PORT))
+    server_socket.listen()
 
-        logger.info("Server listening on port %d", PORT)
+    logger.info("Server listening on port %d", PORT)
 
-        while True:
-            try:
-                # 클라이언트 연결 대기
-                client_socket, client_address = server_socket.accept()
-                logger.info("Connected by %s", client_address)
+    while True:
+        client_socket, client_address = await loop.sock_accept(server_socket)
+        loop.create_task(handle_client(client_socket, client_address))
 
-                # 데이터 수신
-                data = client_socket.recv(1024)
-                if not data:
-                    continue  # 데이터가 없으면 다음 루프로 넘어감
-                
-                # IP 주소와 데이터 추출
-                ip = data[:10].decode('utf-8')  # 처음 10바이트를 IP 주소로 간주
-                data = data[10:].decode('utf-8')  # 나머지 데이터를 실제 데이터로 간주
-                
-                save_to_database(ip, data)
 
-                logger.info("Data received from %s: %s", ip, data)
-
-                # 연결 종료
-                client_socket.close()
-
-            except Exception as e:
-                logger.error("Error handling client data: %s", e)
-            
 if __name__ == "__main__":
-    main()
-
-
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())

@@ -42,5 +42,5 @@ broker_address = "localhost"
 broker_port = 1883
 
 # MQTT 브로커에 메시지 발행
-publish.single("topic/test", "MQTT Test",
+publish.single("topic/test", "MQTT",
                hostname=broker_address, port=broker_port)
