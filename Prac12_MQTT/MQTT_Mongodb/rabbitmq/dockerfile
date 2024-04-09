@@ -1,0 +1,20 @@
+# RabbitMQ를 기본 이미지로 선택
+FROM rabbitmq:3.9.7
+
+# RabbitMQ 관리자 플러그인을 활성화하고, RabbitMQ 구성 파일에 관리자 콘솔을 사용할 수 있도록 옵션을 추가합니다.
+RUN rabbitmq-plugins enable --offline rabbitmq_management
+
+# 볼륨 마운트를 위한 디렉토리 생성 및 권한 설정
+RUN mkdir -p /rabbitmq/data /rabbitmq/config /rabbitmq/logs \
+  && chown -R rabbitmq:rabbitmq /rabbitmq
+
+# 볼륨 마운트 포인트를 환경 변수로 설정
+ENV RABBITMQ_MNESIA_BASE=/rabbitmq/data \
+  RABBITMQ_LOG_BASE=/rabbitmq/logs \
+  RABBITMQ_CONFIG_FILE=/rabbitmq/config/rabbitmq
+
+# 사용자 정의 RabbitMQ 구성 파일을 복사
+COPY rabbitmq.conf /rabbitmq/config/rabbitmq
+
+# RabbitMQ의 기본 포트 오픈
+EXPOSE 5672 15672

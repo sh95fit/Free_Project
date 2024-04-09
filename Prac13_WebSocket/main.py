@@ -106,6 +106,7 @@
 
 
 # =======================================================================================
+
 # # 일반적인 소켓 통신
 # import socket
 # from dotenv import dotenv_values, load_dotenv
@@ -193,6 +194,9 @@
 # if __name__ == "__main__":
 #     main()
 # =======================================================================================
+
+# 비동기 백그라운드 실행 테스트
+
 import asyncio
 import socket
 from dotenv import dotenv_values, load_dotenv
