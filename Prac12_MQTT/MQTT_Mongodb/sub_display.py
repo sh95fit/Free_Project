@@ -1,31 +1,19 @@
-# main.py
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import HTMLResponse
 import paho.mqtt.client as mqtt
-from datetime import datetime
-from dotenv import dotenv_values, load_dotenv
-import threading
 import asyncio
-from queue import Queue
-import logging
 import websockets
-
+from dotenv import dotenv_values
 
 app = FastAPI()
 
-load_dotenv()
-
-# # MQTT Broker 및 FastAPI 설정
+# MQTT Broker 및 FastAPI 설정
 config = dotenv_values(
     r"C:\Users\user\Desktop\KIMSEHUN\develop\Free_Project\Prac12_MQTT\.env")
 
 # MQTT 브로커 정보
 broker_address = '127.0.0.1'
 topic = config['MQTT_TOPIC']
-
-# 로깅 설정
-logging.basicConfig(level=logging.DEBUG)
-
 
 # 웹 소켓 연결 관리
 connected_clients = set()
@@ -45,15 +33,7 @@ def on_message(client, userdata, message):
 # 웹 소켓 데이터 전송
 
 
-async def send_websocket_data(websocket):
-    while True:
-        data = await mqtt_data_queue.get()
-        await websocket.send_text(data)
-
-# MQTT 데이터 수신 확인 함수
-
-
-async def check_mqtt_data():
+async def send_websocket_data():
     while True:
         data = await mqtt_data_queue.get()
         for websocket in connected_clients:
@@ -107,11 +87,8 @@ async def main():
     mqtt_client.subscribe(topic)
     mqtt_client.loop_start()
 
-    # 웹 소켓 서버 실행
-    start_server = websockets.serve(send_websocket_data, "localhost", 8000)
-
     # 비동기 작업 실행
-    await asyncio.gather(start_server, check_mqtt_data())
+    await asyncio.gather(send_websocket_data())
 
 if __name__ == "__main__":
     asyncio.run(main())

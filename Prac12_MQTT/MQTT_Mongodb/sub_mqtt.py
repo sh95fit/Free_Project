@@ -39,7 +39,8 @@ def on_message(client, userdata, msg):
     data['save_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     collection.insert_one(data)
     # print("Data saved to MongoDB")
-    logger.info("Data saved to MongoDB")
+    logger.info(datetime.now().strftime(
+        "%Y-%m-%d %H:%M:%S") + "   Data saved to MongoDB")
 
 
 client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
