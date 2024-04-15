@@ -1,4 +1,8 @@
 .App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   text-align: center;
 }
 
@@ -11,7 +15,7 @@
 }
 
 .canvas {
-  width: 800px;
+  width: 1600px;
   height: 600px;
   border: 1px solid #ccc;
   position: relative;
@@ -21,4 +25,9 @@
   position: absolute;
   background-color: #3498db;
   cursor: pointer;
+  /* transform: translate(-50%, -50%); */
+}
+
+.table {
+  border: 1px solid black; /* 테두리 색을 검정색으로 설정 */
 }
