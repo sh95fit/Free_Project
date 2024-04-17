@@ -41,7 +41,60 @@ print(req)
 # serial_com.open()
 
 serial_com.write(bytes(bytearray(req)))
-time.sleep(0.1)
+time.sleep(0.05)
 res = serial_com.readline()
 
 print(res.hex())
+
+
+def toNum(byte_arr, divider=1, temp=False, reverse=False):
+    product = 1
+    byte_arr = list(byte_arr)
+    if (reverse):
+        byte_arr.reverse()
+    if (temp):
+        if ((byte_arr[0] & 0xF0) > 0):
+            product = -1
+        byte_arr[0] = byte_arr[0] & 0x0F
+    result = int.from_bytes(byte_arr, "big")
+    return product*result/divider
+
+
+result = {}
+
+
+def convert(data):
+    # result["inv"] = toNum(data[0:2])
+    # result["ina"] = toNum(data[2:4])
+    # result["inp"] = toNum(data[4:8])
+    # result["outvr"] = toNum(data[8:10])
+    # result["outvs"] = toNum(data[10:12])
+    # result["outvt"] = toNum(data[12:14])
+    # result["outar"] = toNum(data[14:16])
+    # result["outas"] = toNum(data[16:18])
+    # result["outat"] = toNum(data[18:20])
+
+    # result["outp"] = toNum(data[20:24])
+    # result["pf"] = toNum(data[24:26], 10)
+    # result["frq"] = toNum(data[26:28], 10)
+    # result["cpg"] = toNum(data[28:36])
+    # result['err'] = toNum(data[36:38])
+    result["inv"] = int(data[10:14], 16)
+    result["ina"] = int(data[14:18], 16)
+    result["inp"] = int(data[18:26], 16)
+    result["outvr"] = int(data[26:30], 16)
+    result["outvs"] = int(data[30:34], 16)
+    result["outvt"] = int(data[34:38], 16)
+    result["outar"] = int(data[38:42], 16)
+    result["outas"] = int(data[42:46], 16)
+    result["outat"] = int(data[46:50], 16)
+    result["outp"] = int(data[50:58], 16)
+    result["pf"] = int(data[58:62], 16)/10
+    result["frq"] = int(data[62:66], 16)/10
+    result["cpg"] = int(data[66:82], 16)
+    result['err'] = int(data[82:86], 16)
+
+    return result
+
+
+print(convert(res.hex()))
