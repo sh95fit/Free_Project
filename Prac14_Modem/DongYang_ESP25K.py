@@ -82,6 +82,12 @@ def convert(data):
     result['inv5'] = int(data[94:98], 16)
     result["ina6"] = int(data[98:102], 16)/10
     result['inv6'] = int(data[102:106], 16)
+    result['inp'] = (result['inv1']*result['ina1'] +
+                     result['inv2']*result['ina2'] +
+                     result['inv3']*result['ina3'] +
+                     result['inv4']*result['ina4'] +
+                     result['inv5']*result['ina5'] +
+                     result['inv6']*result['ina6'])
     result['temp'] = int(data[106:110], 16)/10
     result['fr'] = int(data[110:114], 16)/10
 
