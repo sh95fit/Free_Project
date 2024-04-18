@@ -64,21 +64,6 @@ result = {}
 
 
 def convert(data):
-    # result["inv"] = toNum(data[0:2])
-    # result["ina"] = toNum(data[2:4])
-    # result["inp"] = toNum(data[4:8])
-    # result["outvr"] = toNum(data[8:10])
-    # result["outvs"] = toNum(data[10:12])
-    # result["outvt"] = toNum(data[12:14])
-    # result["outar"] = toNum(data[14:16])
-    # result["outas"] = toNum(data[16:18])
-    # result["outat"] = toNum(data[18:20])
-
-    # result["outp"] = toNum(data[20:24])
-    # result["pf"] = toNum(data[24:26], 10)
-    # result["frq"] = toNum(data[26:28], 10)
-    # result["cpg"] = toNum(data[28:36])
-    # result['err'] = toNum(data[36:38])
     result["inv"] = int(data[10:14], 16)
     result["ina"] = int(data[14:18], 16)
     result["inp"] = int(data[18:26], 16)
@@ -97,4 +82,5 @@ def convert(data):
     return result
 
 
+print(res.hex())
 print(convert(res.hex()))
