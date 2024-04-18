@@ -11,6 +11,10 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
+GPIO.setup(23, GPIO.OUT)
+time.sleep(0.1)
+GPIO.output(23, GPIO.LOW)
+
 VENDOR_ID = 0x0403
 PRODUCT_ID = 0x6001
 
@@ -73,10 +77,10 @@ print(req)
 
 # Data Request
 serial_com.write(bytes(bytearray(req)))
-time.sleep(0.05)
+time.sleep(0.1)
 res = serial_com.readline()
 #print(res)
-res = res.hex()
+#res = res.hex()
 
 print(res)
 
@@ -117,7 +121,9 @@ def convert(data):
 
     return result
 
-print(convert(res))
+# Data Length Error Handling
+if len(res)>100:
+    print(convert(res))
 
 
 # Lora Connection
@@ -151,13 +157,17 @@ def convert_to_byte_array(input_string):
 send = [0x4C, 0x52, 0x57, 0x20, 0x34, 0x44, 0x20, 0x01, 0x01]
 CRLF = [0x0D, 0x0A]
 
-
+# real data
 data = res[6:]
+
+# test data
+#data = res[6:71]
+
 #print(data)
 
 length = 0xFF&len(data)
 
-data = convert_to_byte_array(data)
+#data = convert_to_byte_array(data)
 #print(data)
 
 # Make Command
@@ -168,9 +178,12 @@ send.extend(CRLF)
 send = bytes(bytearray(send))
 print(send)
 
-#GPIO.output(23, GPIO.HIGH)
-#time.sleep(0.1)
-#GPIO.output(23, GPIO.LOW)
+GPIO.output(23, GPIO.HIGH)
+time.sleep(0.1)
+GPIO.output(23, GPIO.LOW)
+lora_com.flushInput()
+lora_com.flushOutput()
+time.sleep(0.1)
 
 
 lora_com.write(send)
