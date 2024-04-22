@@ -81,8 +81,9 @@ time.sleep(0.1)
 res = serial_com.readline()
 #print(res)
 #res = res.hex()
+check_res = res.hex()
 
-print(res)
+#print(res)
 
 
 result = {}
@@ -122,8 +123,8 @@ def convert(data):
     return result
 
 # Data Length Error Handling
-if len(res)>100:
-    print(convert(res))
+if len(res)>50:
+    print(convert(check_res))
 
 
 # Lora Connection
@@ -158,7 +159,7 @@ send = [0x4C, 0x52, 0x57, 0x20, 0x34, 0x44, 0x20, 0x01, 0x01]
 CRLF = [0x0D, 0x0A]
 
 # real data
-data = res[6:]
+data = res[3:]
 
 # test data
 #data = res[6:71]
