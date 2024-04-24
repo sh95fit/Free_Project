@@ -44,11 +44,15 @@ def form(message, use_color=True):
     return message
 
 
-class CFormatter(logging.Formatter):
+# logging.Formatter 객체 상속
+# format 함수를 오버라이딩하여 재정의
+class ColoredFormatter(logging.Formatter):
     def __init__(self, msg, use_color=True):
+        # logging.Formatter 클래스의 생성자를 호출하여 객체를 초기화
         logging.Formatter.__init__(self, msg)
         self.use_color = use_color
 
+    # record는 로그 레코드 객체로 asctime, levelname, message, filename, lineno, funcName, name, process, thread 등의 속성을 포함하고 있음
     def format(self, record):
         levelname = record.levelname
         if self.use_color and levelname in COLORS:
@@ -68,11 +72,11 @@ def Logger(path, mode='a'):
     # lineno : 로깅 호출이 일어난 소스 행 번호
     FILE_FORMAT = form(
         "[%(asctime)s][%(levelname)-8s] %(message)s (%(filename)s:%(lineno)d)", False)
-    file_format = CFormatter(FILE_FORMAT, False)
+    file_format = ColoredFormatter(FILE_FORMAT, False)
 
     # Console format, [UTC TIME][LEVELS] MSG
     CONSOLE_FORMAT = form("[%(asctime)s][%(levelname)-18s] %(message)s", True)
-    console_format = CFormatter(CONSOLE_FORMAT)
+    console_format = ColoredFormatter(CONSOLE_FORMAT)
 
     # Logger 정의
     fileHandler = TimedRotatingFileHandler(
