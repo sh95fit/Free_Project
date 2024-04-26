@@ -54,7 +54,7 @@ def fetch_and_send_data():
 
 def schedule_task():
     # 1분마다 작업 실행
-    scheduler.enter(60, 1, schedule_task)
+    scheduler.enter(20, 1, schedule_task)
 
     # 데이터 가져오고 보내기
     fetch_and_send_data()

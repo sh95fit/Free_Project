@@ -12,10 +12,13 @@ class MQTT:
         self.broker_address = self.config['MQTT_BROKER_ADDRESS']
         self.port = int(self.config['MQTT_BROKER_PORT'])
         self.topic = self.config['MQTT_TOPIC']
+        self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        self.client.connect(self.broker_address, self.port)
 
     def sendData(self, req):
-        client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
-        
+        #client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        #client.connect(self.broker_address, self.port)
+
         req = req.hex()
 
         if len(req) == 120:
@@ -52,6 +55,6 @@ class MQTT:
             self.logger.error("[MQ] Data Length Incorrect...")
 
         # 데이터를 JSON 형식으로 변환하여 발행
-        client.publish(self.topic, json.dumps(data))
+        self.client.publish(self.topic, json.dumps(data))
         now_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         self.logger.info(f"{now_date}[MQ] MQTT Success")
