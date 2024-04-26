@@ -46,8 +46,10 @@ class SerialManager:
             timeout=2
         )
 
+        self.logger.info("[SM] Read Data ...")
         serial_com.write(bytes(bytearray(req)))
         time.sleep(0.1)
         res = serial_com.readline()
+        self.logger.info(f"[SM] Received Data : {res}")
 
         return res
