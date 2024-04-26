@@ -27,14 +27,16 @@ class SerialManager:
     def findBySerialPort(self):
         self.init()
         self.logger.info("[SM] Find serial device by port ")
-        vendor_id, product_id = list(map(int, self.conf['did'].split(':')))
-        self.info["port"] = self.find_usb_to_rs485(vendor_id, product_id)
+        vendor_id, product_id = self.conf['did'].split(':')
+        #print(vendor_id, product_id)
+        self.info["port"] = self.find_usb_to_rs485(int(vendor_id,16), int(product_id,16))
+        #print(self.info["port"])
 
         if self.info["port"] != None:
-            self.logger.info(f"[SM] USBtoRS485 Device Port:{self.info["port"]}")
+            self.logger.info(f"[SM] USBtoRS485 Device Port:{self.info['port']}")
         else:
             self.logger.error("[SM] USBtoRS485 Device Not Found...")
-        return self.info["port"][0]
+        return self.info["port"]
 
     def write(self, port, req):
         serial_com = serial.Serial(

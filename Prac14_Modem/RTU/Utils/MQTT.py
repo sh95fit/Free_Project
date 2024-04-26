@@ -15,20 +15,22 @@ class MQTT:
 
     def sendData(self, req):
         client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        
+        req = req.hex()
 
-        if len(req) > 50:
+        if len(req) == 120:
             data = {
                 "device_id": int(req[0:2], 16),
                 "outar": int(req[8:12], 16)/10,
                 "outas": int(req[12:16], 16)/10,
                 "outat": int(req[16:20], 16)/10,
-                "outvrs": int(req[20:24], 16)/10,
-                "outvst": int(req[24:28], 16)/10,
-                "outvtr": int(req[28:32], 16)/10,
-                "tpg": int(req[32:40], 16)/10,
-                "operation": int(req[40:44], 16)/10,
-                "message": int(req[44:52], 16)/10,
-                "cpg": int(req[52:60], 16)/10,
+                "outvrs": int(req[20:24], 16),
+                "outvst": int(req[24:28], 16),
+                "outvtr": int(req[28:32], 16),
+                "tpg": int(req[32:40], 16)/100,
+                "operation": int(req[40:44], 16),
+                "message": int(req[44:52], 16),
+                "cpg": int(req[52:60], 16),
                 "ina1": int(req[60:64], 16)/10,
                 "inv1": int(req[64:68], 16),
                 "ina2": int(req[68:72], 16)/10,
@@ -45,10 +47,11 @@ class MQTT:
                 "fr": int(req[112:116], 16),
                 "savetime": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }
+            print(data)
         else:
             self.logger.error("[MQ] Data Length Incorrect...")
 
         # 데이터를 JSON 형식으로 변환하여 발행
         client.publish(self.topic, json.dumps(data))
-        self.logger.info(f"{datetime.now().strftime(
-            "%Y-%m-%d %H:%M:%S")}[MQ] MQTT Success")
+        now_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        self.logger.info(f"{now_date}[MQ] MQTT Success")

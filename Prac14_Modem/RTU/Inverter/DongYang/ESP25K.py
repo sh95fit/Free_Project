@@ -22,9 +22,9 @@ class ESP_25K:
                 "size": 8,
                 "function": 0x03,
                 "start_high": 0x75,
-                "start_now": 0x61,
+                "start_low": 0x61,
                 "register_high": 0x00,
-                "register_row": 0x1b
+                "register_low": 0x1b
             }
         }
     }
@@ -35,7 +35,6 @@ class ESP_25K:
                self.confSets["triple"]["write"]["start_high"],
                self.confSets["triple"]["write"]["start_low"],
                self.confSets["triple"]["write"]["register_high"],
-               self.confSets["triple"]["write"]["register_low"],
                self.confSets["triple"]["write"]["register_low"]]
         req.extend(crc16(req))
         return req
