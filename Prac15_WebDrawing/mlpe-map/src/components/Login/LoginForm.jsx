@@ -2,6 +2,8 @@ import React from "react";
 import './LoginForm.css'
 import { FaUser,FaLock } from "react-icons/fa";
 
+import { Link } from 'react-router-dom';
+
 const LoginForm = () => {
     return (
         <div className="wrapper">
@@ -25,6 +27,10 @@ const LoginForm = () => {
 
                 <div className="register-link">
                     <p>Don't have an account? <a href="#">Register</a></p>
+                </div>
+
+                <div className="experience">
+                    <Link className="experience-link" to="/main">Experience</Link>
                 </div>
             </form>
         </div>

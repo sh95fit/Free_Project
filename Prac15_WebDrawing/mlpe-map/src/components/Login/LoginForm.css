@@ -96,3 +96,18 @@
 .register-link p a:hover {
     text-decoration: underline;
 }
+
+.experience {
+    text-align: center;
+}
+
+.experience .experience-link {
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 600;
+}
+
+.experience .experience-link:hover {
+    text-decoration: underline;
+}
