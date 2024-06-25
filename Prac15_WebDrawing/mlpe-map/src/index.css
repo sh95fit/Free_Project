@@ -10,11 +10,13 @@ body {
   font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  display: flex;
-  justify-content: center;
+
+  /* 전체 범위에 배경 지정 시 */
+  /* justify-content: center;
   align-items: center;
+  display: flex;
   min-height: 100vh;
   background: url('./assets/login_background.jpg');
   background-size: cover;
-  background-position: center;
+  background-position: center; */
 }

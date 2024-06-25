@@ -1,4 +1,8 @@
 .title {
-  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #000;
   font-weight: 800;
 }

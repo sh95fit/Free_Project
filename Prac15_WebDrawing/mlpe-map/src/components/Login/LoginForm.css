@@ -1,3 +1,13 @@
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('./../../assets/login_background.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
 .wrapper {
     width: 420px;
     background: transparent;
